@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>EOS Teacher View</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #1a1a1a; font-size: 13.5px; user-select: none; }
+
+  .header { display: flex; align-items: center; gap: 14px; padding: 10px 20px; background: #fff; border-bottom: 1px solid #e0e0e0; }
+  .logo { width: 48px; height: 48px; border: 2px solid #e8a020; border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; flex-shrink: 0; }
+  .logo-top { font-size: 7px; font-weight: 800; color: #1a1a1a; letter-spacing: 0.05em; line-height: 1; }
+  .logo-mid { font-size: 5.5px; font-weight: 600; color: #555; line-height: 1; text-align: center; }
+  .logo-bar { width: 32px; height: 3px; background: #e8a020; margin-top: 2px; }
+  .header-text h1 { font-size: 15px; font-weight: 700; }
+  .header-text p { font-size: 12px; color: #666; }
+
+  .breadcrumb { display: flex; align-items: center; gap: 6px; padding: 10px 20px 4px; font-size: 12.5px; }
+  .breadcrumb span { color: #999; }
+  .breadcrumb a { color: #5b21b6; text-decoration: underline; cursor: pointer; }
+  .breadcrumb .current { color: #444; }
+
+  .page-title { padding: 2px 20px 10px; font-size: 15px; font-weight: 600; }
+  .page-title em { font-style: normal; color: #5b21b6; }
+
+  .toolbar { display: flex; gap: 8px; padding: 0 20px 12px; flex-wrap: wrap; }
+  .toolbar-btn { display: flex; align-items: center; gap: 6px; padding: 6px 14px; border: 1px solid #d0d0d0; border-radius: 20px; background: #fff; font-size: 13px; color: #333; cursor: pointer; }
+  .toolbar-btn.active { background: #f0ebff; border-color: #b39ddb; color: #5b21b6; font-weight: 500; }
+  .reset-btn { margin-left: auto; display: flex; align-items: center; gap: 6px; padding: 6px 14px; border: 1px solid #e0a020; border-radius: 20px; background: #fff8ec; font-size: 13px; color: #b07000; cursor: pointer; font-weight: 500; }
+  .reset-btn:hover { background: #fef0cc; }
+
+  .main { display: flex; height: calc(100vh - 133px); min-height: 700px; }
+
+  .left-panel { width: 310px; flex-shrink: 0; background: #fff; border-right: 1px solid #e0e0e0; overflow-y: auto; padding: 12px 0 16px; }
+  .panel-header { display: flex; justify-content: space-between; align-items: center; padding: 0 12px 10px; font-size: 14px; font-weight: 600; }
+  .panel-close { width: 20px; height: 20px; border: 1px solid #ccc; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #888; font-size: 12px; }
+  .filter-row { display: flex; gap: 8px; padding: 0 12px 10px; }
+  .filter-group { display: flex; flex-direction: column; gap: 3px; }
+  .filter-label { font-size: 11px; color: #888; }
+  .filter-select { display: flex; align-items: center; gap: 4px; border: 1px solid #d0d0d0; border-radius: 4px; padding: 4px 6px; font-size: 12px; color: #333; background: #fff; cursor: pointer; }
+  .filter-select .x { color: #999; font-size: 10px; }
+
+  .program-select-wrap { display: flex; gap: 6px; margin-top: 2px; }
+  .program-option { flex: 1; text-align: center; padding: 5px 8px; border: 1px solid #d0d0d0; border-radius: 6px; font-size: 12px; cursor: pointer; color: #555; background: #fff; transition: all 0.15s; }
+  .program-option:hover { background: #f5f3ff; border-color: #b39ddb; }
+
+  /* A40 card styles */
+  .a40-card { width: 130px; border-radius: 10px; border: 2px solid; padding: 14px 10px 10px; display: flex; flex-direction: column; align-items: center; gap: 5px; background: #fff; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
+  .a40-card:hover { transform: translateY(-2px); }
+  .a40-card.current   { border-color: #27ae60; }
+  .a40-card.interested{ border-color: #f1c40f; }
+  .a40-card.previous  { border-color: #e67e22; }
+  .a40-card.not       { border-color: #aaa; }
+  .a40-card.current   .risk-number { color: #27ae60; }
+  .a40-card.interested .risk-number { color: #c9a800; }
+  .a40-card.previous  .risk-number { color: #e67e22; }
+  .a40-card.not       .risk-number { color: #aaa; }
+  .a40-card.active-card.current  { box-shadow: 0 4px 16px rgba(39,174,96,0.35); background: #f0fff5; }
+  .a40-card.active-card.interested { box-shadow: 0 4px 16px rgba(241,196,15,0.35); background: #fffdf0; }
+  .a40-card.active-card.previous { box-shadow: 0 4px 16px rgba(230,126,34,0.35); background: #fff8f0; }
+  .a40-card.active-card.not      { box-shadow: 0 4px 16px rgba(150,150,150,0.35); background: #f8f8f8; }
+
+  /* A40 student ring colors */
+  .avatar-wrap.a40-current    { background: #27ae60; }
+  .avatar-wrap.a40-interested { background: #f1c40f; }
+  .avatar-wrap.a40-previous   { background: #e67e22; }
+  .avatar-wrap.a40-not        { background: #ccc; }
+  .risk-badge.a40-current    { background: #e6f7ee; color: #27ae60; }
+  .risk-badge.a40-interested { background: #fffbe6; color: #c9a800; }
+  .risk-badge.a40-previous   { background: #fef0e0; color: #e67e22; }
+  .risk-badge.a40-not        { background: #f0f0f0; color: #888; }
+
+  /* A40 highlight */
+  .student-card.a40-highlight-current    .avatar-wrap { box-shadow: 0 0 0 8px rgba(39,174,96,0.25); }
+  .student-card.a40-highlight-interested .avatar-wrap { box-shadow: 0 0 0 8px rgba(241,196,15,0.25); }
+  .student-card.a40-highlight-previous   .avatar-wrap { box-shadow: 0 0 0 8px rgba(230,126,34,0.25); }
+  .student-card.a40-highlight-not        .avatar-wrap { box-shadow: 0 0 0 8px rgba(150,150,150,0.25); }
+  .search-bar { display: flex; align-items: center; gap: 8px; margin: 0 12px 12px; border: 1px solid #d0d0d0; border-radius: 6px; padding: 7px 10px; color: #999; font-size: 13px; }
+
+  .tree-row { display: flex; align-items: center; gap: 5px; padding: 3.5px 12px; cursor: pointer; color: #1a1a1a; font-size: 13.5px; line-height: 1.4; user-select: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tree-row:hover { background: #f5f3ff; }
+  .tree-row.selected { background: #ede9ff; color: #5b21b6; font-weight: 500; }
+  .tree-row.folder-row { font-weight: 600; }
+  .d0 { padding-left: 12px; } .d1 { padding-left: 24px; } .d2 { padding-left: 44px; }
+
+  .chev { display: inline-flex; align-items: center; justify-content: center; width: 12px; height: 12px; flex-shrink: 0; transition: transform 0.2s ease; transform: rotate(90deg); }
+  .chev.empty { visibility: hidden; }
+  .chev.closed { transform: rotate(0deg); }
+  .children { overflow: hidden; max-height: 1000px; transition: max-height 0.25s ease; }
+  .children.closed { max-height: 0; }
+  .section-gap { height: 8px; }
+
+  .right-panel { flex: 1; overflow-y: auto; padding: 16px 24px; background: #fff; }
+
+  /* ANALYTICS TOGGLE */
+  .analytics-toggle { display: flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; color: #5b21b6; cursor: pointer; user-select: none; margin-bottom: 10px; width: fit-content; }
+  .analytics-toggle-chev { display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; transition: transform 0.3s ease; transform: rotate(90deg); }
+  .analytics-toggle-chev.closed { transform: rotate(0deg); }
+  .analytics-wrap { overflow: hidden; max-height: 300px; transition: max-height 0.35s ease, opacity 0.3s ease, margin-bottom 0.3s ease; opacity: 1; margin-bottom: 20px; }
+  .analytics-wrap.closed { max-height: 0; opacity: 0; margin-bottom: 4px; }
+  .analytics-row { display: flex; gap: 20px; align-items: flex-start; }
+
+  .risk-cards { display: flex; gap: 12px; flex-shrink: 0; }
+  .risk-card { width: 110px; border-radius: 10px; border: 2px solid; padding: 14px 10px 10px; display: flex; flex-direction: column; align-items: center; gap: 5px; background: #fff; }
+  .risk-card.high { border-color: #e74c3c; } .risk-card.medium { border-color: #e67e22; }
+  .risk-card.low { border-color: #27ae60; } .risk-card.survey { border-color: #aaa; }
+  .risk-number { font-size: 28px; font-weight: 700; line-height: 1; }
+  .risk-card.high .risk-number { color: #e74c3c; } .risk-card.medium .risk-number { color: #e67e22; }
+  .risk-card.low .risk-number { color: #27ae60; } .risk-card.survey .risk-number { color: #aaa; }
+  .risk-label { font-size: 11px; color: #666; text-align: center; line-height: 1.3; }
+  .risk-pct { font-size: 11px; color: #999; }
+
+  .bar-chart-panel { flex: 1; background: #fff; border: 1px solid #e8e8e8; border-radius: 8px; padding: 14px 16px; min-width: 0; }
+  .bar-chart-title { font-size: 13px; font-weight: 600; color: #333; margin-bottom: 12px; }
+  .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
+  .bar-label { font-size: 11.5px; color: #555; text-align: right; width: 170px; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bar-track { flex: 1; height: 22px; background: #f0f0f0; border-radius: 3px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 3px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; font-size: 11.5px; font-weight: 600; color: #fff; white-space: nowrap; transition: width 0.5s ease; }
+  .bar-fill.b1{background:#1a3a5c}.bar-fill.b2{background:#1f5799}.bar-fill.b3{background:#2e80cc}
+  .bar-fill.b4{background:#3a95e0}.bar-fill.b5{background:#4dadf0}.bar-fill.b6{background:#6fc0f5;color:#1a3a5c}
+
+  .bar-row { cursor: pointer; border-radius: 4px; padding: 2px 4px; margin: 0 -4px 9px; transition: background 0.15s; }
+  .bar-row:hover { background: #f0f4ff; }
+  .bar-row.active-filter { background: #ede9ff; }
+  .bar-row.active-filter .bar-label { color: #5b21b6; font-weight: 700; }
+  .bar-row.active-filter .bar-fill { filter: brightness(1.12); }
+
+  .student-card.highlighted .avatar-wrap { outline: 3px solid #2e80cc; outline-offset: 2px; box-shadow: 0 0 0 6px rgba(46,128,204,0.2); }
+  .student-card.dimmed { opacity: 0.22; transition: opacity 0.2s; }
+  .student-card { transition: opacity 0.2s; }
+
+  /* Risk card active state */
+  .risk-card { cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
+  .risk-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+  .risk-card.active-card { transform: translateY(-2px); }
+  .risk-card.high.active-card { box-shadow: 0 4px 16px rgba(231,76,60,0.35); background: #fff5f5; }
+  .risk-card.medium.active-card { box-shadow: 0 4px 16px rgba(230,126,34,0.35); background: #fff8f0; }
+  .risk-card.low.active-card { box-shadow: 0 4px 16px rgba(39,174,96,0.35); background: #f0fff5; }
+  .risk-card.survey.active-card { box-shadow: 0 4px 16px rgba(150,150,150,0.35); background: #f8f8f8; }
+
+  /* Risk-tier student highlights */
+  .student-card.risk-highlight-high .avatar-wrap { box-shadow: 0 0 0 8px rgba(231,76,60,0.25); }
+  .student-card.risk-highlight-medium .avatar-wrap { box-shadow: 0 0 0 8px rgba(230,126,34,0.25); }
+  .student-card.risk-highlight-low .avatar-wrap { box-shadow: 0 0 0 8px rgba(39,174,96,0.25); }
+  .student-card.risk-highlight-survey .avatar-wrap { box-shadow: 0 0 0 8px rgba(150,150,150,0.25); }
+  .student-card.risk-dim { opacity: 0.2; transition: opacity 0.2s; }
+  .filter-hint { font-size: 11.5px; color: #5b21b6; margin-bottom: 10px; font-style: italic; display: flex; align-items: center; gap: 5px; }
+
+  /* STUDENT GROUPS */
+  .student-group { margin-bottom: 24px; }
+  .group-header { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 2px solid; }
+  .group-header.intervention { color: #e74c3c; border-color: #e74c3c; }
+  .group-header.followup { color: #e67e22; border-color: #e67e22; }
+  .group-header.ontrack { color: #27ae60; border-color: #27ae60; }
+  .group-header.survey { color: #999; border-color: #ccc; }
+  .group-count { font-size: 11px; font-weight: 500; padding: 2px 7px; border-radius: 10px; color: #fff; }
+  .group-header.intervention .group-count { background: #e74c3c; }
+  .group-header.followup .group-count { background: #e67e22; }
+  .group-header.ontrack .group-count { background: #27ae60; }
+  .group-header.survey .group-count { background: #aaa; }
+
+  .student-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px 12px; }
+
+  .student-card { display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: grab; transition: opacity 0.2s, transform 0.2s; }
+  .student-card:active { cursor: grabbing; }
+  .student-card.dragging { opacity: 0.35; transform: scale(0.95); }
+  .student-card:hover .avatar-wrap { filter: brightness(1.08); }
+
+  .avatar-wrap { width: 84px; height: 84px; border-radius: 50%; padding: 4px; flex-shrink: 0; position: relative; }
+  .avatar-wrap.intervention { background: #e74c3c; }
+  .avatar-wrap.followup { background: #e67e22; }
+  .avatar-wrap.ontrack { background: #27ae60; }
+  .avatar-wrap.survey { background: #ccc; }
+
+  .student-avatar { width: 100%; height: 100%; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 19px; font-weight: 700; color: #fff; border: 3px solid #fff; }
+  .student-name { font-size: 12px; text-align: center; line-height: 1.3; }
+
+  .risk-badge { font-size: 10.5px; padding: 2px 8px; border-radius: 4px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+  .risk-badge.intervention { background: #fde8e8; color: #e74c3c; }
+  .risk-badge.followup { background: #fef0e0; color: #e67e22; }
+  .risk-badge.ontrack { background: #e6f7ee; color: #27ae60; }
+  .risk-badge.survey { background: #f0f0f0; color: #888; }
+
+  /* SNOOZE ICON on badge */
+  .snooze-icon { font-size: 11px; }
+
+  /* DRAG GHOST */
+  #drag-ghost {
+    position: fixed; pointer-events: none; z-index: 9999;
+    display: none; flex-direction: column; align-items: center; gap: 4px;
+    transform: translate(-50%, -50%);
+  }
+  #drag-ghost .ghost-avatar {
+    width: 60px; height: 60px; border-radius: 50%; border: 4px solid #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 700; color: #fff;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  }
+  #drag-ghost .ghost-name { font-size: 11px; font-weight: 600; color: #333; text-align: center; }
+
+  /* MODAL OVERLAY */
+  #modal-overlay {
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(0,0,0,0.45);
+    display: none; align-items: center; justify-content: center;
+    backdrop-filter: blur(2px);
+  }
+  #modal-overlay.active { display: flex; }
+
+  #interaction-modal {
+    background: rgba(255,255,255,0.97);
+    border-radius: 16px;
+    padding: 24px;
+    width: 520px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    position: relative;
+  }
+
+  .modal-title {
+    font-size: 15px; font-weight: 700; color: #1a1a1a;
+    margin-bottom: 6px; text-align: center;
+  }
+  .modal-subtitle {
+    font-size: 12px; color: #888; text-align: center; margin-bottom: 20px;
+  }
+
+  .modal-student-preview {
+    display: flex; align-items: center; gap: 10px;
+    justify-content: center; margin-bottom: 20px;
+  }
+  .modal-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; color: #fff;
+    border: 3px solid;
+  }
+  .modal-avatar.intervention { border-color: #e74c3c; }
+  .modal-avatar.followup { border-color: #e67e22; }
+  .modal-avatar.ontrack { border-color: #27ae60; }
+  .modal-avatar.survey { border-color: #ccc; }
+  .modal-student-name { font-size: 14px; font-weight: 600; }
+
+  .drop-zones { display: grid; gap: 12px; }
+  .drop-zones.intervention-zones { grid-template-columns: 1fr 1fr; }
+  .drop-zones.followup-zones { grid-template-columns: 1fr 1fr 1fr; }
+
+  .drop-zone {
+    border: 2px dashed #ccc; border-radius: 12px;
+    padding: 18px 12px; text-align: center;
+    cursor: pointer; transition: all 0.2s;
+    background: #fafafa;
+  }
+  .drop-zone:hover, .drop-zone.drag-over {
+    border-color: #5b21b6; background: #f0ebff;
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(91,33,182,0.15);
+  }
+  .drop-zone .zone-icon { font-size: 24px; margin-bottom: 6px; }
+  .drop-zone .zone-label { font-size: 12.5px; font-weight: 600; color: #444; }
+  .drop-zone .zone-sublabel { font-size: 11px; color: #888; margin-top: 3px; }
+
+  .modal-cancel {
+    display: block; width: 100%; margin-top: 14px;
+    text-align: center; font-size: 12px; color: #999;
+    cursor: pointer; padding: 6px;
+  }
+  .modal-cancel:hover { color: #555; }
+
+  /* SURVEY LINK MODAL */
+  #survey-modal-overlay {
+    position: fixed; inset: 0; z-index: 2000;
+    background: rgba(0,0,0,0.45);
+    display: none; align-items: center; justify-content: center;
+    backdrop-filter: blur(2px);
+  }
+  #survey-modal-overlay.active { display: flex; }
+  #survey-modal {
+    background: #fff; border-radius: 16px; padding: 28px 32px;
+    width: 420px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    text-align: center;
+  }
+  .survey-modal-icon { font-size: 32px; margin-bottom: 10px; }
+  .survey-modal-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .survey-modal-name { font-size: 13px; color: #666; margin-bottom: 18px; }
+  .survey-link-box {
+    background: #f0f4ff; border: 1.5px solid #b39ddb;
+    border-radius: 8px; padding: 14px 16px;
+    font-size: 14px; font-weight: 600; color: #5b21b6;
+    letter-spacing: 0.01em; margin-bottom: 14px;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  }
+  .copy-btn {
+    font-size: 11px; background: #5b21b6; color: #fff;
+    border: none; border-radius: 6px; padding: 5px 10px;
+    cursor: pointer; white-space: nowrap; font-weight: 600;
+  }
+  .copy-btn:hover { background: #4a1a9e; }
+  .survey-modal-close {
+    display: block; width: 100%; margin-top: 8px;
+    text-align: center; font-size: 12px; color: #999;
+    cursor: pointer; padding: 6px;
+  }
+  .survey-modal-close:hover { color: #555; }
+
+  /* TOAST */
+  #toast {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+    background: #1a1a1a; color: #fff; padding: 10px 20px; border-radius: 20px;
+    font-size: 13px; font-weight: 500; z-index: 9000;
+    opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
+    white-space: nowrap;
+  }
+  #toast.show { opacity: 1; }
+
+  .fade-in { animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">
+    <div class="logo-top">EQUAL</div>
+    <div class="logo-mid">OPPORTUNITY<br>SCHOOLS</div>
+    <div class="logo-bar"></div>
+  </div>
+  <div class="header-text">
+    <h1>EOS Demo District</h1>
+    <p>EOS Demo District, EOS Demo School</p>
+  </div>
+</div>
+
+<div class="breadcrumb">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+  <span>›</span><a href="#">District Vi...</a><span>›</span>
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5b21b6" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 5.4 7.4 11.5 7.7 11.8a.5.5 0 0 0 .6 0C12.6 21.5 20 15.4 20 10a8 8 0 0 0-8-8z"/></svg>
+  <a href="#">School Vi...</a><span>›</span>
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+  <span class="current">Data Narrative</span>
+</div>
+
+<div class="page-title">
+  Data Narrative: <em id="page-subtitle">EOS Demo School – Ms. Gorgonchuck – Period 1</em>
+</div>
+
+<div class="toolbar">
+  <div class="toolbar-btn active"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>Views</div>
+  <div class="toolbar-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Group By</div>
+  <div class="toolbar-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>Filters</div>
+  <div class="toolbar-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download</div>
+  <div class="toolbar-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Assign Students</div>
+  <div class="toolbar-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>Interactions</div>
+  <div class="reset-btn" onclick="resetPeriod()">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.5"/></svg>
+    Reset View
+  </div>
+</div>
+
+<div class="main">
+  <div class="left-panel">
+    <div class="panel-header">
+      <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>Views</span>
+      <div class="panel-close">✕</div>
+    </div>
+    <div class="filter-row">
+      <div class="filter-group" style="width:100%;">
+        <div class="filter-label">Program</div>
+        <div class="program-select-wrap">
+          <div class="program-option" id="prog-attendance" onclick="selectProgram('attendance')" style="font-weight:600;background:#ede9ff;border-color:#b39ddb;color:#5b21b6;">Attendance</div>
+          <div class="program-option" id="prog-a40" onclick="selectProgram('a40')">A40</div>
+        </div>
+      </div>
+    </div>
+    <div class="search-bar">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      Search your view(s) here
+    </div>
+
+    <div class="tree-row d0 folder-row" onclick="toggle('gorgo')">
+      <span class="chev" id="chev-gorgo"><svg width="8" height="8" viewBox="0 0 8 8"><polygon points="1,1 7,4 1,7" fill="#555"/></svg></span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="#6c5ce7" stroke="none" style="flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>
+      My Students
+    </div>
+    <div class="children" id="gorgo">
+      <div class="tree-row d1 selected period-row" data-period="1" onclick="selectPeriod(this,1)"><span class="chev empty"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Period 1</div>
+      <div class="tree-row d1 period-row" data-period="2" onclick="selectPeriod(this,2)"><span class="chev empty"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Period 2</div>
+      <div class="tree-row d1 period-row" data-period="3" onclick="selectPeriod(this,3)"><span class="chev empty"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Period 3</div>
+      <div class="tree-row d1 period-row" data-period="4" onclick="selectPeriod(this,4)"><span class="chev empty"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Period 4</div>
+      <div class="tree-row d1 period-row" data-period="5" onclick="selectPeriod(this,5)"><span class="chev empty"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Period 5</div>
+      <div class="tree-row d1 period-row" data-period="6" onclick="selectPeriod(this,6)"><span class="chev empty"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Period 6</div>
+      <div class="tree-row d1 period-row" data-period="7" onclick="selectPeriod(this,7)"><span class="chev empty"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Period 7</div>
+      <div class="tree-row d1 period-row" data-period="8" onclick="selectPeriod(this,8)"><span class="chev empty"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Period 8</div>
+      <div class="tree-row d1" id="trusted-adult-row" onclick="selectTrustedAdult(this)">
+        <span class="chev empty"></span>
+        <span style="font-size:14px;flex-shrink:0;">⭐</span>
+        My Trusted Students
+      </div>
+    </div>
+
+    <div class="section-gap"></div>
+
+    <div class="tree-row d0 folder-row" onclick="toggle('targeted')">
+      <span class="chev closed" id="chev-targeted"><svg width="8" height="8" viewBox="0 0 8 8"><polygon points="1,1 7,4 1,7" fill="#555"/></svg></span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="#6c5ce7" stroke="none" style="flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>
+      Targeted Students
+    </div>
+    <div class="children closed" id="targeted">
+      <div class="tree-row d1 folder-row" onclick="toggle('risk')">
+        <span class="chev" id="chev-risk"><svg width="8" height="8" viewBox="0 0 8 8"><polygon points="1,1 7,4 1,7" fill="#555"/></svg></span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="#6c5ce7" stroke="none" style="flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>Risk Factors
+      </div>
+      <div class="children" id="risk">
+        <div class="tree-row d2" onclick="selectRow(this)"><span class="chev empty"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Peer Relations</div>
+        <div class="tree-row d2" onclick="selectRow(this)"><span class="chev empty"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Academic Identity</div>
+        <div class="tree-row d2" onclick="selectRow(this)"><span class="chev empty"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>School Belonging</div>
+        <div class="tree-row d2" onclick="selectRow(this)"><span class="chev empty"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>School Safety</div>
+      </div>
+      <div class="tree-row d1 folder-row" onclick="toggle('action')">
+        <span class="chev" id="chev-action"><svg width="8" height="8" viewBox="0 0 8 8"><polygon points="1,1 7,4 1,7" fill="#555"/></svg></span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="#6c5ce7" stroke="none" style="flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>Action Needed
+      </div>
+      <div class="children" id="action">
+        <div class="tree-row d2" onclick="selectRow(this)"><span class="chev empty"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Meet with High-Risk Students</div>
+        <div class="tree-row d2" onclick="selectRow(this)"><span class="chev empty"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Students that need a follow-up</div>
+        <div class="tree-row d2" onclick="selectRow(this)"><span class="chev empty"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Need to take the survey</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right-panel">
+    <div class="analytics-toggle" onclick="toggleAnalytics()">
+      <span class="analytics-toggle-chev" id="analytics-chev">
+        <svg width="10" height="10" viewBox="0 0 8 8"><polygon points="1,1 7,4 1,7" fill="#5b21b6"/></svg>
+      </span>
+      Summary Analytics
+    </div>
+
+    <div class="analytics-wrap" id="analytics-wrap">
+      <div class="analytics-row">
+        <div class="risk-cards">
+          <div class="risk-card high" id="card-high" onclick="handleRiskCardClick('high')"><div class="risk-number" id="high-num">-</div><div class="risk-label">High Risk</div><div class="risk-pct" id="high-pct">-</div></div>
+          <div class="risk-card medium" id="card-medium" onclick="handleRiskCardClick('medium')"><div class="risk-number" id="med-num">-</div><div class="risk-label">Medium Risk</div><div class="risk-pct" id="med-pct">-</div></div>
+          <div class="risk-card low" id="card-low" onclick="handleRiskCardClick('low')"><div class="risk-number" id="low-num">-</div><div class="risk-label">Low Risk</div><div class="risk-pct" id="low-pct">-</div></div>
+          <div class="risk-card survey" id="card-survey" onclick="handleRiskCardClick('survey')"><div class="risk-number" id="survey-num">-</div><div class="risk-label">Needs Survey</div><div class="risk-pct" id="survey-pct">-</div></div>
+        </div>
+        <div class="bar-chart-panel">
+          <div class="bar-chart-title" id="chart-title">Risk Factor Characteristics</div>
+          <div id="bar-chart-rows"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-hint" id="filter-hint"></div>
+    <div id="student-groups" onclick="handleStudentAreaClick(event)"></div>
+  </div>
+</div>
+
+<!-- SURVEY LINK MODAL -->
+<div id="survey-modal-overlay">
+  <div id="survey-modal">
+    <div class="survey-modal-icon">🔗</div>
+    <div class="survey-modal-title">Survey Link</div>
+    <div class="survey-modal-name" id="survey-modal-student-name"></div>
+    <div class="survey-link-box">
+      <span>www.EOS-Survey.org/surveylink</span>
+      <button class="copy-btn" onclick="copyLink()">Copy</button>
+    </div>
+    <div style="font-size:11.5px;color:#aaa;margin-bottom:4px;">Share this link with the student to complete their survey.</div>
+    <div class="survey-modal-close" onclick="closeSurveyModal()">Close</div>
+  </div>
+</div>
+
+<!-- DRAG GHOST -->
+<div id="drag-ghost">
+  <div class="ghost-avatar" id="ghost-avatar"></div>
+  <div class="ghost-name" id="ghost-name"></div>
+</div>
+
+<!-- MODAL -->
+<div id="modal-overlay">
+  <div id="interaction-modal">
+    <div class="modal-title">Log Interaction</div>
+    <div class="modal-subtitle" id="modal-subtitle">Drag to an action below</div>
+    <div class="modal-student-preview">
+      <div class="modal-avatar" id="modal-avatar-el"></div>
+      <div class="modal-student-name" id="modal-student-name"></div>
+    </div>
+    <div class="drop-zones" id="drop-zones"></div>
+    <div class="modal-cancel" onclick="closeModal()">Cancel</div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const AVATAR_COLORS = [
+  '#5b7fa6','#7b6fa8','#4a9e7a','#c17b3a','#7a5c9e','#3d8a8a',
+  '#a05060','#5a7a50','#8a6030','#405a80','#6a4a7a','#2d7a6a',
+  '#305080','#703050','#4a7060','#8a5040','#507050','#6a3060',
+  '#3a6080','#805030','#4a8060','#704080','#306050','#804040',
+  '#507080','#406040','#705040','#308070','#604070','#408050'
+];
+
+const BAR_LABELS = ['General Attendance Importance','Student–Teacher Relationship','School Belonging','Academic Identity','Peer Relations','School Safety'];
+
+const PERIODS_BASE = {
+  1: { bars:[88.4,61.2,46.8,40.1,35.7,29.3], students:[['Mateo Abalde','MA','ontrack','low'],['Sofia Aguilar','SA','intervention','medium'],['Derek Ashby','DA','followup','medium'],['Priya Balan','PB','ontrack','low'],['Carlos Benitez','CB','survey','survey'],['Hannah Bloom','HB','followup','medium'],['James Calloway','JC','followup','medium'],['Mei Chen','MC','followup','medium'],['Andre Dupont','AD','followup','medium'],['Fatima El-Amin','FE','followup','medium'],['Tyler Garrett','TG','ontrack','low'],['Rosa Gutierrez','RG','intervention','medium'],['Evan Harper','EH','ontrack','low'],['Lily Huang','LH','followup','medium'],['Marcus Irving','MI','ontrack','low'],['Anika Joshi','AJ','followup','high'],['Owen Keating','OK','intervention','medium'],['Danielle Lavoie','DL','intervention','high'],['Samuel Lee','SL','followup','medium'],['Bianca Martinez','BM','survey','survey'],['Noah Mitchell','NM','followup','high'],['Chloe Nguyen','CN','ontrack','low'],['Felix Okafor','FO','intervention','medium'],['Isabel Perez','IP','followup','medium'],['Jaylen Robinson','JR','ontrack','low'],['Amara Solis','AS','followup','high'],['Connor Tran','CT','followup','high'],['Yuki Watanabe','YW','ontrack','low']]},
+  2: { bars:[87.2,63.1,44.3,41.0,38.5,33.2], students:[['Alex Abbott','AA','ontrack','low'],['Aisha Abron','AI','followup','high'],['Luna Adams','LA','ontrack','low'],['Padma Adarsh','PA','followup','high'],['Simone Adger','SA','survey','survey'],['Gilberto Badillo','GB','survey','survey'],['Susana Báez','SB','intervention','medium'],['Pedro Baeza','PB','followup','high'],['Jihu Bag','JB','ontrack','low'],['Yeongsug Bag','YB','followup','medium'],['Felipe Bahena','FB','ontrack','low'],['Lance Baker','LB','intervention','medium'],['Tammy Baker','TB','ontrack','low'],['Travis Baker','TB','intervention','medium'],['Nicole Baldwin','NB','followup','medium'],['Robert Baldwin','RB','followup','high'],['Anna Ball','AB','intervention','medium'],['Marcus Bello','MB','survey','survey'],['Sara Bernstein','SB','followup','medium'],['Dante Calderon','DC','followup','medium'],['Keisha Clark','KC','followup','medium'],['Raj Desai','RD','followup','medium'],['Emma Fowler','EF','intervention','high'],['Isaiah Grant','IG','followup','medium'],['Lucia Herrera','LH','followup','high'],['Kevin Ito','KI','ontrack','low'],['Tanya James','TJ','intervention','medium'],['Bryce Larsen','BL','ontrack','low']]},
+  3: { bars:[91.0,58.4,52.1,47.6,43.2,38.9], students:[['Aaliyah Adams','AA','followup','medium'],['Benjamin Arias','BA','followup','medium'],['Catalina Bravo','CB','ontrack','low'],['Devon Chen','DC','followup','high'],['Elena Cruz','EC','followup','medium'],['Francisco Diaz','FD','ontrack','low'],['Grace Endo','GE','intervention','medium'],['Hakeem Farooq','HF','intervention','high'],['Isabelle Gauthier','IG','followup','medium'],['Jordan Hill','JH','followup','high'],['Kamila Ibarra','KI','intervention','medium'],['Levi Johnson','LJ','followup','medium'],['Mia Kim','MK','followup','medium'],['Nathan Lopez','NL','followup','medium'],['Olivia Mendez','OM','ontrack','low'],['Patrick Ngo','PN','ontrack','low'],['Quinn Ortega','QO','followup','high'],['Rachel Park','RP','ontrack','low'],['Sebastian Reyes','SR','ontrack','low'],['Talia Singh','TS','ontrack','low'],['Uriel Torres','UT','followup','medium'],['Vanessa Uribe','VU','followup','medium'],['William Vega','WV','ontrack','low'],['Xiomara Walsh','XW','intervention','medium'],['Yasmin Xavier','YX','followup','medium'],['Zachary Young','ZY','intervention','medium'],['Abby Zamora','AZ','survey','survey'],['Brandon Acosta','BA','followup','high'],['Camille Adkins','CA','followup','medium']]},
+  4: { bars:[84.7,67.3,41.2,36.8,31.4,27.6], students:[['Darius Allen','DA','intervention','high'],['Eliza Baxter','EB','ontrack','low'],['Finn Carr','FC','survey','survey'],['Gianna Delgado','GD','followup','medium'],['Hugo Estrada','HE','intervention','high'],['Iris Ferreira','IF','followup','medium'],['Jack Gomez','JG','followup','high'],['Kira Hassan','KH','survey','survey'],['Leo Ingram','LI','ontrack','low'],['Maya Jacobs','MJ','ontrack','low'],['Nick Kwan','NK','followup','high'],['Opal Lam','OL','followup','medium'],['Paulo Matos','PM','intervention','medium'],['Qiana Norris','QN','followup','medium'],['Riley Ochoa','RO','followup','medium'],['Sage Patel','SP','intervention','medium'],['Theo Quinn','TQ','followup','medium'],['Uma Ramirez','UR','ontrack','low'],['Victor Santos','VS','ontrack','low'],['Wren Taylor','WT','ontrack','low'],['Xena Upton','XU','intervention','medium'],['Yara Vargas','YV','followup','medium'],['Zion Wade','ZW','followup','medium'],['Ariel Xiong','AX','intervention','high'],['Blake York','BY','followup','medium'],['Celeste Zavala','CZ','followup','medium'],['Diego Aguilera','DA','followup','medium'],['Eva Blackwood','EB','followup','high'],['Fabian Castillo','FC','ontrack','low']]},
+  5: { bars:[89.5,55.8,49.3,44.7,40.2,35.1], students:[['Gabi Chavez','GC','intervention','high'],['Hector Dillon','HD','ontrack','low'],['Ivy Espinoza','IE','followup','medium'],['Jaden Ford','JF','intervention','medium'],['Kali Guerrero','KG','followup','medium'],['Landon Hayes','LH','survey','survey'],['Maria Iglesias','MI','ontrack','low'],['Noel Juarez','NJ','ontrack','low'],['Olive Klein','OK','intervention','medium'],['Preston Leal','PL','followup','medium'],['Quincy Monroe','QM','ontrack','low'],['Rosa Navarro','RN','followup','medium'],['Stella Ozuna','SO','ontrack','low'],['Trey Pacheco','TP','followup','medium'],['Una Quinn','UQ','followup','medium'],['Vince Ramos','VR','followup','high'],['Wendy Sandoval','WS','intervention','high'],['Xander Thomas','XT','followup','high'],['Yolanda Urbina','YU','followup','medium'],['Zara Valdez','ZV','followup','medium'],['Andre Willis','AW','survey','survey'],['Bria Xiong','BX','followup','medium'],['Cole Yates','CY','survey','survey'],['Demi Zarate','DZ','ontrack','low'],['Elton Alcala','EA','ontrack','low'],['Fiona Barrios','FB','intervention','high'],['Grant Cabrera','GC','followup','medium']]},
+  6: { bars:[86.1,70.4,38.9,34.5,29.8,24.4], students:[['Hazel Deleon','HD','survey','survey'],['Ira Eaton','IE','followup','medium'],['Jade Flores','JF','intervention','medium'],['Knox Graham','KG','intervention','medium'],['Lana Hoover','LH','ontrack','low'],['Milo Ibarra','MI','followup','medium'],['Nadia Jefferson','NJ','followup','high'],['Oscar Kellerman','OK','intervention','medium'],['Paloma Lynch','PL','survey','survey'],['Quinton Marsh','QM','followup','high'],['Reyna Nash','RN','followup','medium'],['Seth Ortiz','SO','ontrack','low'],['Tamara Preston','TP','ontrack','low'],['Ulises Quinn','UQ','ontrack','low'],['Vera Ruiz','VR','followup','medium'],['Wade Simmons','WS','followup','high'],['Xara Todd','XT','ontrack','low'],['Yael Underwood','YU','ontrack','low'],['Zoey Vance','ZV','followup','medium'],['Amir Williams','AW','followup','medium'],['Bella Xiao','BX','intervention','medium'],['Caden Young','CY','followup','medium'],['Diana Zavala','DZ','followup','medium'],['Emilio Aguirre','EA','followup','high'],['Faye Bennett','FB','intervention','medium'],['Gio Campos','GC','followup','medium'],['Holly Drake','HD','ontrack','low'],['Ivan Espejo','IE','followup','high'],['Jade Figueroa','JF','ontrack','low'],['Kai Garza','KG','ontrack','low']]},
+  7: { bars:[90.3,53.6,55.4,50.1,46.8,42.3], students:[['Leila Huerta','LH','followup','high'],['Marco Ingram','MI','followup','medium'],['Nina Jenkins','NJ','ontrack','low'],['Omar Kline','OK','ontrack','low'],['Paige Lowe','PL','followup','medium'],['Remy Mora','RM','ontrack','low'],['Sasha Nunez','SN','followup','medium'],['Tobias Ocampo','TO','intervention','medium'],['Uma Pineda','UP','followup','medium'],['Vance Quiroz','VQ','ontrack','low'],['Willa Rosas','WR','survey','survey'],['Xia Salazar','XS','ontrack','low'],['Yusuf Tate','YT','intervention','medium'],['Zelda Uribe','ZU','followup','high'],['August Varela','AV','intervention','high'],['Becca Wolfe','BW','intervention','medium'],['Chase Xavier','CX','followup','medium'],['Dalia Yoon','DY','followup','medium'],['Emeka Zavala','EZ','ontrack','low'],['Freya Acuna','FA','ontrack','low'],['Gabe Bravo','GB','followup','medium'],['Hana Cortez','HC','followup','high'],['Idris Dominguez','ID','intervention','medium'],['Jola Esteves','JE','followup','medium'],['Kai Fuentes','KF','followup','high'],['Layla Guzman','LG','intervention','high']]},
+  8: { bars:[83.2,72.1,35.6,31.2,26.9,21.7], students:[['Maya Hernandez','MH','intervention','medium'],['Noah Ibarra','NI','ontrack','low'],['Olivia James','OJ','followup','high'],['Paco Keller','PK','ontrack','low'],['Quinn Lang','QL','followup','medium'],['Raina Morales','RM','ontrack','low'],['Sam Navarro','SN','ontrack','low'],['Tia Oneal','TO','followup','medium'],['Ulric Perez','UP','survey','survey'],['Violet Quintero','VQ','followup','medium'],['Walter Reyes','WR','followup','medium'],['Xena Santiago','XS','followup','medium'],['Yara Torres','YT','intervention','high'],['Zack Uribe','ZU','ontrack','low'],['Ana Vasquez','AV','followup','medium'],['Brody Webb','BW','followup','high'],['Carmen Xiong','CX','intervention','medium'],['Drew Yates','DY','survey','survey'],['Eva Zamora','EZ','followup','medium'],['Felix Acosta','FA','survey','survey'],['Gina Blanco','GB','followup','medium'],['Hiro Castillo','HC','followup','medium'],['India Davila','ID','followup','medium'],['Jesse Espinoza','JE','ontrack','low'],['Kira Fuentes','KF','intervention','high'],['Leo Garcia','LG','followup','medium'],['Mia Huerta','MH','intervention','medium'],['Nico Ibarra','NI','ontrack','low'],['Ora Johnson','OJ','ontrack','low'],['Penny Kim','PK','followup','high']]}
+};
+
+const GROUP_CONFIG = {
+  intervention: { label:'Needs Intervention', headerClass:'intervention', badgeClass:'intervention', badgeLabel:'High Risk' },
+  followup:     { label:'Needs Follow-up',    headerClass:'followup',     badgeClass:'followup',     badgeLabel:'Medium Risk' },
+  survey:       { label:'Needs Survey',        headerClass:'survey',       badgeClass:'survey',       badgeLabel:'Needs Survey' },
+  ontrack:      { label:'On Track',            headerClass:'ontrack',      badgeClass:'ontrack',      badgeLabel:'On Track' }
+};
+const GROUP_ORDER = ['intervention','followup','survey','ontrack'];
+
+// Live state per period
+let periodState = {};
+let currentPeriod = 1;
+let dragStudent = null;
+
+function deepClone(obj) { return JSON.parse(JSON.stringify(obj)); }
+
+// ── TRUSTED ADULT LIST ──
+let trustedAdultList = new Set();
+
+// Pre-seed with 8 students from period 1
+const TRUSTED_ADULT_SEED = [
+  { name:'Mateo Abalde', initials:'MA', color:'#5b7fa6' },
+  { name:'Hannah Bloom', initials:'HB', color:'#7b6fa8' },
+  { name:'Mei Chen', initials:'MC', color:'#4a9e7a' },
+  { name:'Fatima El-Amin', initials:'FE', color:'#c17b3a' },
+  { name:'Rosa Gutierrez', initials:'RG', color:'#7a5c9e' },
+  { name:'Samuel Lee', initials:'SL', color:'#3d8a8a' },
+  { name:'Chloe Nguyen', initials:'CN', color:'#a05060' },
+  { name:'Isabel Perez', initials:'IP', color:'#5a7a50' }
+];
+
+function initTrustedAdult() {
+  trustedAdultList = new Set(TRUSTED_ADULT_SEED.map(s => s.name));
+  // Note: renderTrustedAdultView() is not called here because periodState
+  // is already initialized before this runs
+}
+
+function addToTrustedAdult(student) {
+  if (trustedAdultList.has(student.name)) {
+    showToast(`${student.name} is already in My Trusted Students`);
+    return;
+  }
+  trustedAdultList.add(student.name);
+  if (currentPeriod !== null) {
+    renderStudentGroups(currentPeriod);
+  } else {
+    renderTrustedAdultView();
+  }
+  showToast(`⭐ ${student.name} added to My Trusted Students`);
+}
+
+function renderTrustedAdultList() { /* no-op: list is now a view, not a sidebar */ }
+
+function initState() {
+  periodState = {};
+  for (let p = 1; p <= 8; p++) {
+    periodState[p] = PERIODS_BASE[p].students.map((s,i) => ({
+      name: s[0], initials: s[1], group: s[2], risk: s[3],
+      originalGroup: s[2], originalRisk: s[3], colorIdx: i, snoozed: false
+    }));
+  }
+}
+
+function pct(n, total) { return (n/total*100).toFixed(1)+'%'; }
+
+function renderPeriod(p) {
+  currentPeriod = p;
+  const base = PERIODS_BASE[p];
+  const students = periodState[p];
+  const total = students.length;
+
+  document.getElementById('page-subtitle').textContent =
+    `EOS Demo School – My Students – Period ${p}`;
+  document.getElementById('chart-title').textContent =
+    `Risk Factor Characteristics – Period ${p}`;
+
+  // Always restore attendance risk cards FIRST before reading/writing them
+  document.querySelector('.risk-cards').innerHTML = `
+    <div class="risk-card high" id="card-high" onclick="handleRiskCardClick('high')"><div class="risk-number" id="high-num">-</div><div class="risk-label">High Risk</div><div class="risk-pct" id="high-pct">-</div></div>
+    <div class="risk-card medium" id="card-medium" onclick="handleRiskCardClick('medium')"><div class="risk-number" id="med-num">-</div><div class="risk-label">Medium Risk</div><div class="risk-pct" id="med-pct">-</div></div>
+    <div class="risk-card low" id="card-low" onclick="handleRiskCardClick('low')"><div class="risk-number" id="low-num">-</div><div class="risk-label">Low Risk</div><div class="risk-pct" id="low-pct">-</div></div>
+    <div class="risk-card survey" id="card-survey" onclick="handleRiskCardClick('survey')"><div class="risk-number" id="survey-num">-</div><div class="risk-label">Needs Survey</div><div class="risk-pct" id="survey-pct">-</div></div>`;
+  document.querySelector('.bar-chart-panel').style.display = '';
+  activeBarIndex = null;
+  activeRiskFilter = null;
+  activeA40Filter = null;
+
+  const counts = { intervention:0, followup:0, ontrack:0, survey:0 };
+  students.forEach(s => counts[s.group]++);
+
+  document.getElementById('high-num').textContent = counts.intervention;
+  document.getElementById('high-pct').textContent = pct(counts.intervention, total);
+  document.getElementById('med-num').textContent = counts.followup;
+  document.getElementById('med-pct').textContent = pct(counts.followup, total);
+  document.getElementById('low-num').textContent = counts.ontrack;
+  document.getElementById('low-pct').textContent = pct(counts.ontrack, total);
+  document.getElementById('survey-num').textContent = counts.survey;
+  document.getElementById('survey-pct').textContent = pct(counts.survey, total);
+
+  const barClasses = ['b1','b2','b3','b4','b5','b6'];
+  if (!p) return;
+  document.getElementById('bar-chart-rows').innerHTML = base.bars.map((val,i) => `
+    <div class="bar-row" data-bar-index="${i}" onclick="handleBarClick(${i}, ${p})">
+      <div class="bar-label">${BAR_LABELS[i]}</div>
+      <div class="bar-track"><div class="bar-fill ${barClasses[i]}" style="width:${val}%">${val}%</div></div>
+    </div>`).join('');
+
+  renderStudentGroups(p);
+}
+
+function renderStudentGroups(p) {
+  const students = periodState[p];
+  const grouped = { intervention:[], followup:[], survey:[], ontrack:[] };
+  students.forEach(s => grouped[s.group].push(s));
+
+  const RISK_BADGE = {
+    high:   { cls:'intervention', label:'High Risk' },
+    medium: { cls:'followup',     label:'Medium Risk' },
+    low:    { cls:'ontrack',      label:'Low Risk' },
+    survey: { cls:'survey',       label:'Needs Survey' }
+  };
+  const RING_CLASS = {
+    high: 'intervention', medium: 'followup', low: 'ontrack', survey: 'survey'
+  };
+
+  const groupsHTML = GROUP_ORDER.map(gKey => {
+    const cfg = GROUP_CONFIG[gKey];
+    const list = grouped[gKey];
+    if (!list.length) return '';
+    const cardsHTML = list.map(s => {
+      const color = AVATAR_COLORS[s.colorIdx % AVATAR_COLORS.length];
+      const parts = s.name.split(' ');
+      const nameHTML = parts.length > 1 ? parts[0]+'<br>'+parts.slice(1).join(' ') : s.name;
+      const snoozeHTML = s.snoozed ? `<span class="snooze-icon">⏰</span>` : '';
+      const risk = s.risk || s.group;
+      const badge = RISK_BADGE[risk] || RISK_BADGE.survey;
+      const ringCls = RING_CLASS[risk] || 'survey';
+      const isTrusted = trustedAdultList.has(s.name);
+      const starHTML = isTrusted ? `<span style="position:absolute;top:-2px;right:-2px;font-size:14px;line-height:1;">⭐</span>` : '';
+      return `
+        <div class="student-card" data-name="${s.name}" data-group="${s.group}" data-risk="${risk}"
+             onmousedown="startDrag(event, '${s.name}', ${p})">
+          <div class="avatar-wrap ${ringCls}" style="position:relative;">
+            <div class="student-avatar" style="background:${color}">${s.initials}</div>
+            ${starHTML}
+          </div>
+          <div class="student-name">${nameHTML}</div>
+          <div class="risk-badge ${badge.cls}">${snoozeHTML}${badge.label}</div>
+        </div>`;
+    }).join('');
+    return `
+      <div class="student-group">
+        <div class="group-header ${cfg.headerClass}">
+          ${cfg.label} <span class="group-count">${list.length}</span>
+        </div>
+        <div class="student-grid">${cardsHTML}</div>
+      </div>`;
+  }).join('');
+
+  const groups = document.getElementById('student-groups');
+  groups.innerHTML = groupsHTML;
+  groups.classList.remove('fade-in');
+  void groups.offsetWidth;
+  groups.classList.add('fade-in');
+}
+
+// ── PROGRAM SWITCHER ──
+let currentProgram = 'attendance';
+
+// A40 categories per student (assigned randomly but consistently per period)
+// categories: 'current' | 'interested' | 'previous' | 'not'
+// Proportions: ~25% current, ~15% interested, ~5% previous, ~50% not
+const A40_CATS = ['current','current','current','current','current',
+                  'interested','interested','interested',
+                  'previous',
+                  'not','not','not','not','not','not','not','not','not','not'];
+
+function getA40Cat(studentIdx, periodNum) {
+  // Deterministic assignment based on student index and period
+  const cats = ['current','current','current','current','current',
+                'interested','interested','interested',
+                'previous',
+                'not','not','not','not','not','not','not','not','not','not','not'];
+  return cats[(studentIdx * 3 + periodNum * 7) % cats.length];
+}
+
+function selectProgram(prog) {
+  currentProgram = prog;
+  // Update UI
+  document.getElementById('prog-attendance').style.cssText = prog === 'attendance'
+    ? 'font-weight:600;background:#ede9ff;border-color:#b39ddb;color:#5b21b6;'
+    : '';
+  document.getElementById('prog-a40').style.cssText = prog === 'a40'
+    ? 'font-weight:600;background:#ede9ff;border-color:#b39ddb;color:#5b21b6;'
+    : '';
+
+  if (currentPeriod !== null) {
+    if (prog === 'a40') renderA40Period(currentPeriod);
+    else renderPeriod(currentPeriod);
+  }
+}
+
+const A40_CONFIG = [
+  { key:'current',    label:'Currently in Advanced Programs',  cardCls:'current',    badgeCls:'a40-current',    ringCls:'a40-current',    color:'#27ae60' },
+  { key:'interested', label:'Interested in Advanced Programs', cardCls:'interested', badgeCls:'a40-interested', ringCls:'a40-interested', color:'#f1c40f' },
+  { key:'previous',   label:'Previously in Advanced Programs', cardCls:'previous',   badgeCls:'a40-previous',   ringCls:'a40-previous',   color:'#e67e22' },
+  { key:'not',        label:'Not Interested',                  cardCls:'not',        badgeCls:'a40-not',        ringCls:'a40-not',        color:'#ccc'    }
+];
+
+let activeA40Filter = null;
+
+function renderA40Period(p) {
+  currentPeriod = p;
+  activeA40Filter = null;
+  activeBarIndex = null;
+  activeRiskFilter = null;
+
+  document.getElementById('page-subtitle').textContent =
+    `EOS Demo School – My Students – Period ${p} – A40`;
+  document.getElementById('chart-title').textContent = '';
+
+  const students = periodState[p];
+  const total = students.length;
+
+  // Assign A40 categories
+  const studentsWithA40 = students.map((s, i) => ({
+    ...s, a40: getA40Cat(i, p)
+  }));
+
+  // Count
+  const counts = { current:0, interested:0, previous:0, not:0 };
+  studentsWithA40.forEach(s => counts[s.a40]++);
+
+  // Render summary cards (replacing risk cards)
+  const cardsHTML = A40_CONFIG.map(cfg => `
+    <div class="a40-card ${cfg.cardCls}" id="a40-card-${cfg.key}" onclick="handleA40CardClick('${cfg.key}', ${p})">
+      <div class="risk-number">${counts[cfg.key]}</div>
+      <div class="risk-label" style="font-size:10.5px;text-align:center;line-height:1.3;">${cfg.label}</div>
+      <div class="risk-pct">${pct(counts[cfg.key], total)}</div>
+    </div>`).join('');
+
+  document.querySelector('.risk-cards').innerHTML = cardsHTML;
+
+  // Hide bar chart
+  document.getElementById('bar-chart-rows').innerHTML = '';
+  document.getElementById('chart-title').textContent = '';
+  document.querySelector('.bar-chart-panel').style.display = 'none';
+
+  // Render student groups by A40 category
+  const grouped = { current:[], interested:[], previous:[], not:[] };
+  studentsWithA40.forEach(s => grouped[s.a40].push(s));
+
+  const groupsHTML = A40_CONFIG.map(cfg => {
+    const list = grouped[cfg.key];
+    if (!list.length) return '';
+    const cardsHTML = list.map(s => {
+      const color = AVATAR_COLORS[s.colorIdx % AVATAR_COLORS.length];
+      const parts = s.name.split(' ');
+      const nameHTML = parts.length > 1 ? parts[0]+'<br>'+parts.slice(1).join(' ') : s.name;
+      const isTrusted = trustedAdultList.has(s.name);
+      const starHTML = isTrusted ? `<span style="position:absolute;top:-2px;right:-2px;font-size:14px;line-height:1;">⭐</span>` : '';
+      return `
+        <div class="student-card a40-student" data-name="${s.name}" data-a40="${s.a40}" data-group="${s.group}" data-risk="${s.risk||s.group}"
+             onmousedown="startDrag(event, '${s.name}', ${p})">
+          <div class="avatar-wrap ${cfg.ringCls}" style="position:relative;">
+            <div class="student-avatar" style="background:${color}">${s.initials}</div>
+            ${starHTML}
+          </div>
+          <div class="student-name">${nameHTML}</div>
+          <div class="risk-badge ${cfg.badgeCls}">${cfg.label.split(' ')[0] === 'Not' ? 'Not Interested' : cfg.label.split(' ')[0]}</div>
+        </div>`;
+    }).join('');
+    return `
+      <div class="student-group">
+        <div class="group-header" style="color:${cfg.color === '#ccc' ? '#999' : cfg.color};border-color:${cfg.color === '#ccc' ? '#ccc' : cfg.color};">
+          ${cfg.label} <span class="group-count" style="background:${cfg.color === '#ccc' ? '#aaa' : cfg.color};">${list.length}</span>
+        </div>
+        <div class="student-grid">${cardsHTML}</div>
+      </div>`;
+  }).join('');
+
+  const groups = document.getElementById('student-groups');
+  groups.innerHTML = groupsHTML;
+  groups.classList.remove('fade-in');
+  void groups.offsetWidth;
+  groups.classList.add('fade-in');
+
+  const hint = document.getElementById('filter-hint');
+  if (hint) hint.textContent = '';
+}
+
+function handleA40CardClick(cat, p) {
+  if (activeA40Filter === cat) {
+    activeA40Filter = null;
+    // Clear all highlights
+    A40_CONFIG.forEach(cfg => {
+      const card = document.getElementById('a40-card-' + cfg.key);
+      if (card) card.classList.remove('active-card');
+    });
+    document.querySelectorAll('.a40-student').forEach(c => {
+      c.classList.remove('risk-dim');
+      A40_CONFIG.forEach(cfg => c.classList.remove('a40-highlight-' + cfg.key));
+    });
+    return;
+  }
+
+  activeA40Filter = cat;
+  A40_CONFIG.forEach(cfg => {
+    const card = document.getElementById('a40-card-' + cfg.key);
+    if (card) card.classList.toggle('active-card', cfg.key === cat);
+  });
+
+  document.querySelectorAll('.a40-student').forEach(card => {
+    const a40 = card.dataset.a40;
+    A40_CONFIG.forEach(cfg => card.classList.remove('a40-highlight-' + cfg.key));
+    card.classList.remove('risk-dim');
+    if (a40 === cat) {
+      card.classList.add('a40-highlight-' + cat);
+    } else {
+      card.classList.add('risk-dim');
+    }
+  });
+}
+
+// ── RISK CARD FILTER ──
+let activeRiskFilter = null;
+
+// Bar chart multipliers per risk tier (relative to base values)
+// High risk students score higher on risk factors, low risk lower
+const RISK_MULTIPLIERS = {
+  high:   [1.18, 1.22, 1.28, 1.30, 1.25, 1.32],
+  medium: [1.04, 1.06, 1.02, 1.05, 1.03, 1.04],
+  low:    [0.78, 0.72, 0.65, 0.68, 0.70, 0.62],
+  survey: [1.00, 1.00, 1.00, 1.00, 1.00, 1.00]
+};
+
+function handleRiskCardClick(tier) {
+  // Toggle off if same card clicked again
+  if (activeRiskFilter === tier) {
+    clearRiskFilter();
+    return;
+  }
+
+  // Clear bar filter if active
+  if (activeBarIndex !== null) {
+    clearBarHighlight();
+  }
+
+  activeRiskFilter = tier;
+
+  // Update card active states
+  ['high','medium','low','survey'].forEach(t => {
+    const card = document.getElementById('card-' + t);
+    if (card) card.classList.toggle('active-card', t === tier);
+  });
+
+  // Highlight/dim student cards
+  document.querySelectorAll('.student-card').forEach(card => {
+    const risk = card.dataset.risk;
+    card.classList.remove('risk-highlight-high','risk-highlight-medium','risk-highlight-low','risk-highlight-survey','risk-dim');
+    if (risk === tier) {
+      card.classList.add('risk-highlight-' + tier);
+    } else {
+      card.classList.add('risk-dim');
+    }
+  });
+
+  // Update bar chart with tier-adjusted values
+  const base = PERIODS_BASE[currentPeriod];
+  const mults = RISK_MULTIPLIERS[tier];
+  const barClasses = ['b1','b2','b3','b4','b5','b6'];
+  document.getElementById('bar-chart-rows').innerHTML = base.bars.map((val, i) => {
+    const adjusted = Math.min(99.9, val * mults[i]).toFixed(1);
+    return `
+      <div class="bar-row" data-bar-index="${i}" onclick="handleBarClick(${i}, ${currentPeriod})">
+        <div class="bar-label">${BAR_LABELS[i]}</div>
+        <div class="bar-track"><div class="bar-fill ${barClasses[i]}" style="width:${adjusted}%">${adjusted}%</div></div>
+      </div>`;
+  }).join('');
+
+  // Update hint
+  const tierLabels = { high:'High Risk', medium:'Medium Risk', low:'Low Risk', survey:'Needs Survey' };
+  const hint = document.getElementById('filter-hint');
+  if (hint) hint.textContent = `Showing ${tierLabels[tier]} students — click the card again or elsewhere to clear`;
+}
+
+function clearRiskFilter() {
+  activeRiskFilter = null;
+  ['high','medium','low','survey'].forEach(t => {
+    const card = document.getElementById('card-' + t);
+    if (card) card.classList.remove('active-card');
+  });
+  document.querySelectorAll('.student-card').forEach(card => {
+    card.classList.remove('risk-highlight-high','risk-highlight-medium','risk-highlight-low','risk-highlight-survey','risk-dim');
+  });
+  // Restore base bar chart
+  const base = PERIODS_BASE[currentPeriod];
+  const barClasses = ['b1','b2','b3','b4','b5','b6'];
+  document.getElementById('bar-chart-rows').innerHTML = base.bars.map((val, i) => `
+    <div class="bar-row" data-bar-index="${i}" onclick="handleBarClick(${i}, ${currentPeriod})">
+      <div class="bar-label">${BAR_LABELS[i]}</div>
+      <div class="bar-track"><div class="bar-fill ${barClasses[i]}" style="width:${val}%">${val}%</div></div>
+    </div>`).join('');
+  const hint = document.getElementById('filter-hint');
+  if (hint) hint.textContent = '';
+}
+
+// ── BAR FILTER ──
+let activeBarIndex = null;
+
+function handleBarClick(barIdx, p) {
+  const base = PERIODS_BASE[p];
+  const allStudents = periodState[p];
+  // Only survey-takers (not survey group) can be highlighted
+  const eligible = allStudents.filter(s => s.group !== 'survey');
+
+  if (activeBarIndex === barIdx) {
+    // Toggle off
+    activeBarIndex = null;
+    clearBarHighlight();
+    return;
+  }
+
+  activeBarIndex = barIdx;
+
+  // Mark active bar row
+  document.querySelectorAll('.bar-row').forEach(r => r.classList.remove('active-filter'));
+  const activeRow = document.querySelector(`.bar-row[data-bar-index="${barIdx}"]`);
+  if (activeRow) activeRow.classList.add('active-filter');
+
+  // Calculate how many students to highlight based on %
+  const pctVal = base.bars[barIdx] / 100;
+  const count = Math.round(eligible.length * pctVal);
+
+  // Pick a deterministic subset (seeded by barIdx so consistent on re-click)
+  const highlighted = new Set();
+  const seed = barIdx * 7;
+  for (let i = 0; i < count; i++) {
+    highlighted.add(eligible[(seed + i * 3) % eligible.length].name);
+  }
+
+  // Apply to cards
+  document.querySelectorAll('.student-card').forEach(card => {
+    const name = card.dataset.name;
+    const group = card.dataset.group;
+    if (group === 'survey') return; // survey students not affected
+    if (highlighted.has(name)) {
+      card.classList.add('highlighted');
+      card.classList.remove('dimmed');
+    } else {
+      card.classList.add('dimmed');
+      card.classList.remove('highlighted');
+    }
+  });
+
+  // Show hint
+  const hint = document.getElementById('filter-hint');
+  if (hint) {
+    hint.textContent = `Showing ${count} of ${eligible.length} surveyed students flagged for ${BAR_LABELS[barIdx]} — click again or elsewhere to clear`;
+  }
+}
+
+function clearBarHighlight() {
+  document.querySelectorAll('.bar-row').forEach(r => r.classList.remove('active-filter'));
+  document.querySelectorAll('.student-card').forEach(c => {
+    c.classList.remove('highlighted', 'dimmed');
+  });
+  const hint = document.getElementById('filter-hint');
+  if (hint) hint.textContent = '';
+}
+
+// ── DRAG ──
+let isDragging = false;
+let dragStartX, dragStartY;
+const DRAG_THRESHOLD = 6;
+
+function startDrag(e, name, period) {
+  dragStudent = periodState[period].find(s => s.name === name);
+  dragStartX = e.clientX;
+  dragStartY = e.clientY;
+  isDragging = false;
+
+  const color = AVATAR_COLORS[dragStudent.colorIdx % AVATAR_COLORS.length];
+  document.getElementById('ghost-avatar').style.background = color;
+  document.getElementById('ghost-avatar').textContent = dragStudent.initials;
+  document.getElementById('ghost-name').textContent = dragStudent.name;
+
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
+  e.preventDefault();
+}
+
+function onMouseMove(e) {
+  if (!isDragging) {
+    const dx = Math.abs(e.clientX - dragStartX);
+    const dy = Math.abs(e.clientY - dragStartY);
+    if (dx > DRAG_THRESHOLD || dy > DRAG_THRESHOLD) {
+      isDragging = true;
+      const ghost = document.getElementById('drag-ghost');
+      ghost.style.display = 'flex';
+      // Mark card as dragging
+      document.querySelectorAll('.student-card').forEach(c => {
+        if (c.dataset.name === dragStudent.name) c.classList.add('dragging');
+      });
+      openModal(dragStudent);
+    }
+  }
+  if (isDragging) {
+    const ghost = document.getElementById('drag-ghost');
+    ghost.style.left = e.clientX + 'px';
+    ghost.style.top = e.clientY + 'px';
+  }
+}
+
+function onMouseUp(e) {
+  document.removeEventListener('mousemove', onMouseMove);
+  document.removeEventListener('mouseup', onMouseUp);
+  document.getElementById('drag-ghost').style.display = 'none';
+  document.querySelectorAll('.student-card').forEach(c => c.classList.remove('dragging'));
+  isDragging = false;
+}
+
+// ── MODAL ──
+function openModal(student) {
+  const isIntervention = student.group === 'intervention';
+  const isSurvey = student.group === 'survey';
+
+  document.getElementById('modal-student-name').textContent = student.name;
+  const avatarEl = document.getElementById('modal-avatar-el');
+  avatarEl.textContent = student.initials;
+  avatarEl.className = `modal-avatar ${student.group}`;
+  avatarEl.style.background = AVATAR_COLORS[student.colorIdx % AVATAR_COLORS.length];
+
+  const zonesEl = document.getElementById('drop-zones');
+
+  // Always show Log Interaction zones
+  const logZones = [
+    { key:'1on1', icon:'🤝', label:'1-on-1 Interaction', sub:'Move to On Track' },
+    { key:'parent', icon:'👪', label:'Parent Interaction', sub:'Move to On Track' },
+    { key:'counselor', icon:'💬', label:'Counselor Referral', sub:'Move to On Track' },
+    { key:'other', icon:'📝', label:'Other', sub:'Move to On Track' }
+  ];
+
+  if (isSurvey) {
+    // Survey students: log interaction options + get survey link
+    zonesEl.className = 'drop-zones followup-zones';
+    const surveyZones = [
+      ...logZones,
+      { key:'surveylink', icon:'🔗', label:'Get Survey Link', sub:'Share with student' },
+      { key:'trustedadult', icon:'⭐', label:'Add to Trusted Adult', sub:'Save to list' }
+    ];
+    zonesEl.innerHTML = surveyZones.map(z => `
+      <div class="drop-zone" data-action="${z.key}"
+           onmouseenter="this.classList.add('drag-over')"
+           onmouseleave="this.classList.remove('drag-over')"
+           onmouseup="handleDrop('${z.key}')">
+        <div class="zone-icon">${z.icon}</div>
+        <div class="zone-label">${z.label}</div>
+        <div class="zone-sublabel">${z.sub}</div>
+      </div>`).join('');
+  } else if (isIntervention) {
+    zonesEl.className = 'drop-zones followup-zones';
+    const interventionZones = [
+      ...logZones,
+      { key:'trustedadult', icon:'⭐', label:'Add to Trusted Adult', sub:'Save to list' }
+    ];
+    zonesEl.innerHTML = interventionZones.map(z => `
+      <div class="drop-zone" data-action="${z.key}"
+           onmouseenter="this.classList.add('drag-over')"
+           onmouseleave="this.classList.remove('drag-over')"
+           onmouseup="handleDrop('${z.key}')">
+        <div class="zone-icon">${z.icon}</div>
+        <div class="zone-label">${z.label}</div>
+        <div class="zone-sublabel">${z.sub}</div>
+      </div>`).join('');
+  } else {
+    // followup or ontrack: log interaction + delay follow-up
+    zonesEl.className = 'drop-zones followup-zones';
+    const allZones = [
+      ...logZones,
+      { key:'delay', icon:'⏰', label:'Delay Follow-up', sub:'Snooze in Follow-up' },
+      { key:'trustedadult', icon:'⭐', label:'Add to Trusted Adult', sub:'Save to list' }
+    ];
+    zonesEl.innerHTML = allZones.map(z => `
+      <div class="drop-zone" data-action="${z.key}"
+           onmouseenter="this.classList.add('drag-over')"
+           onmouseleave="this.classList.remove('drag-over')"
+           onmouseup="handleDrop('${z.key}')">
+        <div class="zone-icon">${z.icon}</div>
+        <div class="zone-label">${z.label}</div>
+        <div class="zone-sublabel">${z.sub}</div>
+      </div>`).join('');
+  }
+
+  document.getElementById('modal-overlay').classList.add('active');
+}
+
+function handleDrop(action) {
+  if (action === 'surveylink') {
+    closeModal();
+    if (!dragStudent) return;
+    openSurveyModal(dragStudent.name);
+    return;
+  }
+
+  if (action === 'trustedadult') {
+    closeModal();
+    if (!dragStudent) return;
+    addToTrustedAdult(dragStudent);
+    dragStudent = null;
+    return;
+  }
+
+  closeModal();
+  if (!dragStudent) return;
+
+  const s = periodState[currentPeriod].find(st => st.name === dragStudent.name);
+  if (!s) return;
+
+  if (action === 'delay') {
+    s.snoozed = true;
+    showToast(`${s.name} snoozed in Needs Follow-up`);
+  } else {
+    s.group = 'ontrack';
+    s.snoozed = false;
+    const actionLabels = {
+      '1on1': '1-on-1 Interaction',
+      'parent': 'Parent Interaction',
+      'counselor': 'Counselor Referral',
+      'other': 'Other'
+    };
+    showToast(`${s.name} → On Track (${actionLabels[action] || action})`);
+  }
+
+  renderPeriod(currentPeriod);
+  dragStudent = null;
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('active');
+  document.getElementById('drag-ghost').style.display = 'none';
+  document.querySelectorAll('.student-card').forEach(c => c.classList.remove('dragging'));
+}
+
+// Close modal if clicking overlay background
+document.getElementById('modal-overlay').addEventListener('mouseup', function(e) {
+  if (e.target === this) closeModal();
+});
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ── RESET ──
+function resetPeriod() {
+  initState();
+  renderPeriod(currentPeriod);
+  showToast('View reset to original state');
+}
+
+// ── TREE ──
+function selectPeriod(el, p) {
+  document.querySelectorAll('.tree-row.selected').forEach(r => r.classList.remove('selected'));
+  el.classList.add('selected');
+  if (currentProgram === 'a40') renderA40Period(p);
+  else renderPeriod(p);
+}
+
+function selectTrustedAdult(el) {
+  document.querySelectorAll('.tree-row.selected').forEach(r => r.classList.remove('selected'));
+  el.classList.add('selected');
+  renderTrustedAdultView();
+}
+
+function renderTrustedAdultView() {
+  currentPeriod = null;
+  activeBarIndex = null;
+  activeRiskFilter = null;
+  ['high','medium','low','survey'].forEach(t => {
+    const c = document.getElementById('card-' + t);
+    if (c) c.classList.remove('active-card');
+  });
+
+  document.getElementById('page-subtitle').textContent = 'EOS Demo School – My Trusted Students';
+  document.getElementById('chart-title').textContent = 'Risk Factor Characteristics – My Trusted Students';
+
+  // Gather all trusted students from all periods (deduplicated by name)
+  const seen = new Set();
+  const trusted = [];
+  for (let p = 1; p <= 8; p++) {
+    if (periodState[p]) {
+      periodState[p].forEach(s => {
+        if (trustedAdultList.has(s.name) && !seen.has(s.name)) {
+          seen.add(s.name);
+          trusted.push(s);
+        }
+      });
+    }
+  }
+  // Also include seed students that may not appear in current periodState
+  TRUSTED_ADULT_SEED.forEach(seed => {
+    if (!seen.has(seed.name)) {
+      seen.add(seed.name);
+      trusted.push({ name: seed.name, initials: seed.initials, group: 'ontrack', risk: 'low', colorIdx: 0, snoozed: false });
+    }
+  });
+
+  const total = trusted.length;
+  const counts = { intervention:0, followup:0, ontrack:0, survey:0 };
+  trusted.forEach(s => counts[s.group]++);
+
+  // Count by actual risk level for trusted students
+  const riskCounts = { high:0, medium:0, low:0, survey:0 };
+  trusted.forEach(s => { const r = s.risk || 'low'; riskCounts[r] = (riskCounts[r]||0) + 1; });
+
+  document.getElementById('high-num').textContent = riskCounts.high;
+  document.getElementById('high-pct').textContent = pct(riskCounts.high, total);
+  document.getElementById('med-num').textContent = riskCounts.medium;
+  document.getElementById('med-pct').textContent = pct(riskCounts.medium, total);
+  document.getElementById('low-num').textContent = riskCounts.low;
+  document.getElementById('low-pct').textContent = pct(riskCounts.low, total);
+  document.getElementById('survey-num').textContent = riskCounts.survey;
+  document.getElementById('survey-pct').textContent = pct(riskCounts.survey, total);
+
+  // Placeholder bar chart for trusted students
+  const barClasses = ['b1','b2','b3','b4','b5','b6'];
+  const trustedBars = [72.3, 58.1, 49.6, 44.2, 38.7, 31.4];
+  document.getElementById('bar-chart-rows').innerHTML = trustedBars.map((val, i) => `
+    <div class="bar-row">
+      <div class="bar-label">${BAR_LABELS[i]}</div>
+      <div class="bar-track"><div class="bar-fill ${barClasses[i]}" style="width:${val}%">${val}%</div></div>
+    </div>`).join('');
+
+  // Render students in a single grid (no grouping needed here)
+  const cardsHTML = trusted.map(s => {
+    const color = AVATAR_COLORS[s.colorIdx % AVATAR_COLORS.length];
+    const parts = s.name.split(' ');
+    const nameHTML = parts.length > 1 ? parts[0] + '<br>' + parts.slice(1).join(' ') : s.name;
+    const RISK_BADGE = {
+      high:   { cls:'intervention', label:'High Risk' },
+      medium: { cls:'followup',     label:'Medium Risk' },
+      low:    { cls:'ontrack',      label:'Low Risk' },
+      survey: { cls:'survey',       label:'Needs Survey' }
+    };
+    const RING_CLASS = { high:'intervention', medium:'followup', low:'ontrack', survey:'survey' };
+    const risk = s.risk || s.group;
+    const badge = RISK_BADGE[risk] || RISK_BADGE.survey;
+    const ringCls = RING_CLASS[risk] || 'survey';
+    return `
+      <div class="student-card" data-name="${s.name}" data-group="${s.group}" data-risk="${risk}"
+           onmousedown="startDrag(event, '${s.name}', 1)">
+        <div class="avatar-wrap ${ringCls}" style="position:relative;">
+          <div class="student-avatar" style="background:${color}">${s.initials}</div>
+          <span style="position:absolute;top:-2px;right:-2px;font-size:14px;line-height:1;">⭐</span>
+        </div>
+        <div class="student-name">${nameHTML}</div>
+        <div class="risk-badge ${badge.cls}">${badge.label}</div>
+      </div>`;
+  }).join('');
+
+  const groups = document.getElementById('student-groups');
+  groups.innerHTML = `
+    <div class="student-group">
+      <div class="group-header ontrack">
+        My Trusted Students <span class="group-count">${total}</span>
+      </div>
+      <div class="student-grid">${cardsHTML}</div>
+    </div>`;
+  groups.classList.remove('fade-in');
+  void groups.offsetWidth;
+  groups.classList.add('fade-in');
+
+  const hint = document.getElementById('filter-hint');
+  if (hint) hint.textContent = '';
+}
+
+function selectRow(el) {
+  document.querySelectorAll('.tree-row.selected').forEach(r => r.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function toggle(id) {
+  const children = document.getElementById(id);
+  const chev = document.getElementById('chev-'+id);
+  const isOpen = !children.classList.contains('closed');
+  if (isOpen) { children.classList.add('closed'); chev.classList.add('closed'); }
+  else { children.classList.remove('closed'); chev.classList.remove('closed'); }
+}
+
+function toggleAnalytics() {
+  const wrap = document.getElementById('analytics-wrap');
+  const chev = document.getElementById('analytics-chev');
+  const isOpen = !wrap.classList.contains('closed');
+  if (isOpen) { wrap.classList.add('closed'); chev.classList.add('closed'); }
+  else { wrap.classList.remove('closed'); chev.classList.remove('closed'); }
+}
+
+// ── SURVEY LINK MODAL ──
+function openSurveyModal(name) {
+  document.getElementById('survey-modal-student-name').textContent = name;
+  document.getElementById('survey-modal-overlay').classList.add('active');
+}
+
+function closeSurveyModal() {
+  document.getElementById('survey-modal-overlay').classList.remove('active');
+}
+
+function copyLink() {
+  navigator.clipboard.writeText('www.EOS-Survey.org/surveylink').catch(() => {});
+  const btn = document.querySelector('.copy-btn');
+  btn.textContent = 'Copied!';
+  setTimeout(() => btn.textContent = 'Copy', 2000);
+  showToast('Survey link copied to clipboard');
+}
+
+// Close survey modal on overlay click
+document.getElementById('survey-modal-overlay').addEventListener('mouseup', function(e) {
+  if (e.target === this) closeSurveyModal();
+});
+
+// Click outside bars clears highlight
+document.addEventListener('click', function(e) {
+  if (!activeBarIndex === null) return;
+  const inBar = e.target.closest('.bar-row');
+  const inStudents = e.target.closest('#student-groups');
+  const inRiskCards = e.target.closest('.risk-cards');
+  if (!inBar && !inStudents && !inRiskCards) {
+    clearBarHighlight();
+    activeBarIndex = null;
+    if (activeRiskFilter) clearRiskFilter();
+  }
+});
+
+function handleStudentAreaClick(e) {
+  if (!e.target.closest('.student-card') && activeBarIndex !== null) {
+    clearBarHighlight();
+    activeBarIndex = null;
+  }
+}
+
+// Init
+initState();
+initTrustedAdult();
+renderPeriod(1);
+</script>
+</body>
+</html>
