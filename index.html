@@ -44,7 +44,6 @@
   .program-option { flex: 1; text-align: center; padding: 5px 8px; border: 1px solid #d0d0d0; border-radius: 6px; font-size: 12px; cursor: pointer; color: #555; background: #fff; transition: all 0.15s; }
   .program-option:hover { background: #f5f3ff; border-color: #b39ddb; }
 
-  /* A40 card styles */
   .a40-card { width: 130px; border-radius: 10px; border: 2px solid; padding: 14px 10px 10px; display: flex; flex-direction: column; align-items: center; gap: 5px; background: #fff; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
   .a40-card:hover { transform: translateY(-2px); }
   .a40-card.current   { border-color: #27ae60; }
@@ -60,7 +59,6 @@
   .a40-card.active-card.previous { box-shadow: 0 4px 16px rgba(230,126,34,0.35); background: #fff8f0; }
   .a40-card.active-card.not      { box-shadow: 0 4px 16px rgba(150,150,150,0.35); background: #f8f8f8; }
 
-  /* A40 student ring colors */
   .avatar-wrap.a40-current    { background: #27ae60; }
   .avatar-wrap.a40-interested { background: #f1c40f; }
   .avatar-wrap.a40-previous   { background: #e67e22; }
@@ -70,7 +68,6 @@
   .risk-badge.a40-previous   { background: #fef0e0; color: #e67e22; }
   .risk-badge.a40-not        { background: #f0f0f0; color: #888; }
 
-  /* A40 highlight */
   .student-card.a40-highlight-current    .avatar-wrap { box-shadow: 0 0 0 8px rgba(39,174,96,0.25); }
   .student-card.a40-highlight-interested .avatar-wrap { box-shadow: 0 0 0 8px rgba(241,196,15,0.25); }
   .student-card.a40-highlight-previous   .avatar-wrap { box-shadow: 0 0 0 8px rgba(230,126,34,0.25); }
@@ -81,18 +78,17 @@
   .tree-row:hover { background: #f5f3ff; }
   .tree-row.selected { background: #ede9ff; color: #5b21b6; font-weight: 500; }
   .tree-row.folder-row { font-weight: 600; }
-  .d0 { padding-left: 12px; } .d1 { padding-left: 24px; } .d2 { padding-left: 44px; }
+  .d0 { padding-left: 12px; } .d1 { padding-left: 24px; } .d2 { padding-left: 44px; } .d3 { padding-left: 60px; }
 
   .chev { display: inline-flex; align-items: center; justify-content: center; width: 12px; height: 12px; flex-shrink: 0; transition: transform 0.2s ease; transform: rotate(90deg); }
   .chev.empty { visibility: hidden; }
   .chev.closed { transform: rotate(0deg); }
-  .children { overflow: hidden; max-height: 1000px; transition: max-height 0.25s ease; }
+  .children { overflow: hidden; max-height: 2000px; transition: max-height 0.25s ease; }
   .children.closed { max-height: 0; }
   .section-gap { height: 8px; }
 
   .right-panel { flex: 1; overflow-y: auto; padding: 16px 24px; background: #fff; }
 
-  /* ANALYTICS TOGGLE */
   .analytics-toggle { display: flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; color: #5b21b6; cursor: pointer; user-select: none; margin-bottom: 10px; width: fit-content; }
   .analytics-toggle-chev { display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; transition: transform 0.3s ease; transform: rotate(90deg); }
   .analytics-toggle-chev.closed { transform: rotate(0deg); }
@@ -129,7 +125,6 @@
   .student-card.dimmed { opacity: 0.22; transition: opacity 0.2s; }
   .student-card { transition: opacity 0.2s; }
 
-  /* Risk card active state */
   .risk-card { cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
   .risk-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
   .risk-card.active-card { transform: translateY(-2px); }
@@ -138,7 +133,6 @@
   .risk-card.low.active-card { box-shadow: 0 4px 16px rgba(39,174,96,0.35); background: #f0fff5; }
   .risk-card.survey.active-card { box-shadow: 0 4px 16px rgba(150,150,150,0.35); background: #f8f8f8; }
 
-  /* Risk-tier student highlights */
   .student-card.risk-highlight-high .avatar-wrap { box-shadow: 0 0 0 8px rgba(231,76,60,0.25); }
   .student-card.risk-highlight-medium .avatar-wrap { box-shadow: 0 0 0 8px rgba(230,126,34,0.25); }
   .student-card.risk-highlight-low .avatar-wrap { box-shadow: 0 0 0 8px rgba(39,174,96,0.25); }
@@ -146,18 +140,21 @@
   .student-card.risk-dim { opacity: 0.2; transition: opacity 0.2s; }
   .filter-hint { font-size: 11.5px; color: #5b21b6; margin-bottom: 10px; font-style: italic; display: flex; align-items: center; gap: 5px; }
 
-  /* STUDENT GROUPS */
   .student-group { margin-bottom: 24px; }
   .group-header { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 2px solid; }
   .group-header.intervention { color: #e74c3c; border-color: #e74c3c; }
   .group-header.followup { color: #e67e22; border-color: #e67e22; }
   .group-header.ontrack { color: #27ae60; border-color: #27ae60; }
   .group-header.survey { color: #999; border-color: #ccc; }
+  .group-header.period { color: #5b21b6; border-color: #b39ddb; }
+  .group-header.trusted { color: #b07000; border-color: #e8a020; }
   .group-count { font-size: 11px; font-weight: 500; padding: 2px 7px; border-radius: 10px; color: #fff; }
   .group-header.intervention .group-count { background: #e74c3c; }
   .group-header.followup .group-count { background: #e67e22; }
   .group-header.ontrack .group-count { background: #27ae60; }
   .group-header.survey .group-count { background: #aaa; }
+  .group-header.period .group-count { background: #5b21b6; }
+  .group-header.trusted .group-count { background: #e8a020; }
 
   .student-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px 12px; }
 
@@ -181,10 +178,16 @@
   .risk-badge.ontrack { background: #e6f7ee; color: #27ae60; }
   .risk-badge.survey { background: #f0f0f0; color: #888; }
 
-  /* SNOOZE ICON on badge */
   .snooze-icon { font-size: 11px; }
 
-  /* DRAG GHOST */
+  /* Targeted view period label */
+  .targeted-view-header { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+  .targeted-view-title { font-size: 14px; font-weight: 700; color: #1a1a1a; }
+  .targeted-view-subtitle { font-size: 12px; color: #888; }
+  .targeted-view-badge { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 10px; }
+  .targeted-view-badge.risk-factor { background: #fde8e8; color: #e74c3c; }
+  .targeted-view-badge.action { background: #f0ebff; color: #5b21b6; }
+
   #drag-ghost {
     position: fixed; pointer-events: none; z-index: 9999;
     display: none; flex-direction: column; align-items: center; gap: 4px;
@@ -198,7 +201,6 @@
   }
   #drag-ghost .ghost-name { font-size: 11px; font-weight: 600; color: #333; text-align: center; }
 
-  /* MODAL OVERLAY */
   #modal-overlay {
     position: fixed; inset: 0; z-index: 1000;
     background: rgba(0,0,0,0.45);
@@ -216,24 +218,10 @@
     position: relative;
   }
 
-  .modal-title {
-    font-size: 15px; font-weight: 700; color: #1a1a1a;
-    margin-bottom: 6px; text-align: center;
-  }
-  .modal-subtitle {
-    font-size: 12px; color: #888; text-align: center; margin-bottom: 20px;
-  }
-
-  .modal-student-preview {
-    display: flex; align-items: center; gap: 10px;
-    justify-content: center; margin-bottom: 20px;
-  }
-  .modal-avatar {
-    width: 44px; height: 44px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px; font-weight: 700; color: #fff;
-    border: 3px solid;
-  }
+  .modal-title { font-size: 15px; font-weight: 700; color: #1a1a1a; margin-bottom: 6px; text-align: center; }
+  .modal-subtitle { font-size: 12px; color: #888; text-align: center; margin-bottom: 20px; }
+  .modal-student-preview { display: flex; align-items: center; gap: 10px; justify-content: center; margin-bottom: 20px; }
+  .modal-avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: #fff; border: 3px solid; }
   .modal-avatar.intervention { border-color: #e74c3c; }
   .modal-avatar.followup { border-color: #e67e22; }
   .modal-avatar.ontrack { border-color: #27ae60; }
@@ -259,14 +247,9 @@
   .drop-zone .zone-label { font-size: 12.5px; font-weight: 600; color: #444; }
   .drop-zone .zone-sublabel { font-size: 11px; color: #888; margin-top: 3px; }
 
-  .modal-cancel {
-    display: block; width: 100%; margin-top: 14px;
-    text-align: center; font-size: 12px; color: #999;
-    cursor: pointer; padding: 6px;
-  }
+  .modal-cancel { display: block; width: 100%; margin-top: 14px; text-align: center; font-size: 12px; color: #999; cursor: pointer; padding: 6px; }
   .modal-cancel:hover { color: #555; }
 
-  /* SURVEY LINK MODAL */
   #survey-modal-overlay {
     position: fixed; inset: 0; z-index: 2000;
     background: rgba(0,0,0,0.45);
@@ -289,20 +272,11 @@
     letter-spacing: 0.01em; margin-bottom: 14px;
     display: flex; align-items: center; justify-content: space-between; gap: 10px;
   }
-  .copy-btn {
-    font-size: 11px; background: #5b21b6; color: #fff;
-    border: none; border-radius: 6px; padding: 5px 10px;
-    cursor: pointer; white-space: nowrap; font-weight: 600;
-  }
+  .copy-btn { font-size: 11px; background: #5b21b6; color: #fff; border: none; border-radius: 6px; padding: 5px 10px; cursor: pointer; white-space: nowrap; font-weight: 600; }
   .copy-btn:hover { background: #4a1a9e; }
-  .survey-modal-close {
-    display: block; width: 100%; margin-top: 8px;
-    text-align: center; font-size: 12px; color: #999;
-    cursor: pointer; padding: 6px;
-  }
+  .survey-modal-close { display: block; width: 100%; margin-top: 8px; text-align: center; font-size: 12px; color: #999; cursor: pointer; padding: 6px; }
   .survey-modal-close:hover { color: #555; }
 
-  /* TOAST */
   #toast {
     position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
     background: #1a1a1a; color: #fff; padding: 10px 20px; border-radius: 20px;
@@ -410,19 +384,19 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="#6c5ce7" stroke="none" style="flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>Risk Factors
       </div>
       <div class="children" id="risk">
-        <div class="tree-row d2" onclick="selectRow(this)"><span class="chev empty"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Peer Relations</div>
-        <div class="tree-row d2" onclick="selectRow(this)"><span class="chev empty"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Academic Identity</div>
-        <div class="tree-row d2" onclick="selectRow(this)"><span class="chev empty"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>School Belonging</div>
-        <div class="tree-row d2" onclick="selectRow(this)"><span class="chev empty"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>School Safety</div>
+        <div class="tree-row d2" onclick="selectTargetedView(this,'risk-factor','peer-relations')"><span class="chev empty"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Peer Relations</div>
+        <div class="tree-row d2" onclick="selectTargetedView(this,'risk-factor','academic-identity')"><span class="chev empty"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Academic Identity</div>
+        <div class="tree-row d2" onclick="selectTargetedView(this,'risk-factor','school-belonging')"><span class="chev empty"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>School Belonging</div>
+        <div class="tree-row d2" onclick="selectTargetedView(this,'risk-factor','school-safety')"><span class="chev empty"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>School Safety</div>
       </div>
       <div class="tree-row d1 folder-row" onclick="toggle('action')">
         <span class="chev" id="chev-action"><svg width="8" height="8" viewBox="0 0 8 8"><polygon points="1,1 7,4 1,7" fill="#555"/></svg></span>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="#6c5ce7" stroke="none" style="flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>Action Needed
       </div>
       <div class="children" id="action">
-        <div class="tree-row d2" onclick="selectRow(this)"><span class="chev empty"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Meet with High-Risk Students</div>
-        <div class="tree-row d2" onclick="selectRow(this)"><span class="chev empty"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Students that need a follow-up</div>
-        <div class="tree-row d2" onclick="selectRow(this)"><span class="chev empty"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Need to take the survey</div>
+        <div class="tree-row d2" onclick="selectTargetedView(this,'action','high-risk')"><span class="chev empty"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Meet with High-Risk Students</div>
+        <div class="tree-row d2" onclick="selectTargetedView(this,'action','follow-up')"><span class="chev empty"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Students that need a follow-up</div>
+        <div class="tree-row d2" onclick="selectTargetedView(this,'action','needs-survey')"><span class="chev empty"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Need to take the survey</div>
       </div>
     </div>
   </div>
@@ -438,13 +412,13 @@
 
     <div class="analytics-wrap" id="analytics-wrap">
       <div class="analytics-row">
-        <div class="risk-cards">
+        <div class="risk-cards" id="risk-cards-container">
           <div class="risk-card high" id="card-high" onclick="handleRiskCardClick('high')"><div class="risk-number" id="high-num">-</div><div class="risk-label">High Risk</div><div class="risk-pct" id="high-pct">-</div></div>
           <div class="risk-card medium" id="card-medium" onclick="handleRiskCardClick('medium')"><div class="risk-number" id="med-num">-</div><div class="risk-label">Medium Risk</div><div class="risk-pct" id="med-pct">-</div></div>
           <div class="risk-card low" id="card-low" onclick="handleRiskCardClick('low')"><div class="risk-number" id="low-num">-</div><div class="risk-label">Low Risk</div><div class="risk-pct" id="low-pct">-</div></div>
           <div class="risk-card survey" id="card-survey" onclick="handleRiskCardClick('survey')"><div class="risk-number" id="survey-num">-</div><div class="risk-label">Needs Survey</div><div class="risk-pct" id="survey-pct">-</div></div>
         </div>
-        <div class="bar-chart-panel">
+        <div class="bar-chart-panel" id="bar-chart-panel">
           <div class="bar-chart-title" id="chart-title">Risk Factor Characteristics</div>
           <div id="bar-chart-rows"></div>
         </div>
@@ -502,7 +476,33 @@ const AVATAR_COLORS = [
   '#507080','#406040','#705040','#308070','#604070','#408050'
 ];
 
+// BAR_LABELS indexed 0-5 matching bar chart order
+// Risk factor submenu keys map to bar indices:
+// 'peer-relations'     -> index 4
+// 'academic-identity'  -> index 3
+// 'school-belonging'   -> index 2
+// 'school-safety'      -> index 5
 const BAR_LABELS = ['General Attendance Importance','Student–Teacher Relationship','School Belonging','Academic Identity','Peer Relations','School Safety'];
+
+const RISK_FACTOR_BAR_INDEX = {
+  'peer-relations':    4,
+  'academic-identity': 3,
+  'school-belonging':  2,
+  'school-safety':     5
+};
+
+const RISK_FACTOR_LABELS = {
+  'peer-relations':    'Peer Relations',
+  'academic-identity': 'Academic Identity',
+  'school-belonging':  'School Belonging',
+  'school-safety':     'School Safety'
+};
+
+const ACTION_LABELS = {
+  'high-risk':    'Meet with High-Risk Students',
+  'follow-up':    'Students that need a follow-up',
+  'needs-survey': 'Need to take the survey'
+};
 
 const PERIODS_BASE = {
   1: { bars:[88.4,61.2,46.8,40.1,35.7,29.3], students:[['Mateo Abalde','MA','ontrack','low'],['Sofia Aguilar','SA','intervention','medium'],['Derek Ashby','DA','followup','medium'],['Priya Balan','PB','ontrack','low'],['Carlos Benitez','CB','survey','survey'],['Hannah Bloom','HB','followup','medium'],['James Calloway','JC','followup','medium'],['Mei Chen','MC','followup','medium'],['Andre Dupont','AD','followup','medium'],['Fatima El-Amin','FE','followup','medium'],['Tyler Garrett','TG','ontrack','low'],['Rosa Gutierrez','RG','intervention','medium'],['Evan Harper','EH','ontrack','low'],['Lily Huang','LH','followup','medium'],['Marcus Irving','MI','ontrack','low'],['Anika Joshi','AJ','followup','high'],['Owen Keating','OK','intervention','medium'],['Danielle Lavoie','DL','intervention','high'],['Samuel Lee','SL','followup','medium'],['Bianca Martinez','BM','survey','survey'],['Noah Mitchell','NM','followup','high'],['Chloe Nguyen','CN','ontrack','low'],['Felix Okafor','FO','intervention','medium'],['Isabel Perez','IP','followup','medium'],['Jaylen Robinson','JR','ontrack','low'],['Amara Solis','AS','followup','high'],['Connor Tran','CT','followup','high'],['Yuki Watanabe','YW','ontrack','low']]},
@@ -523,17 +523,18 @@ const GROUP_CONFIG = {
 };
 const GROUP_ORDER = ['intervention','followup','survey','ontrack'];
 
-// Live state per period
 let periodState = {};
 let currentPeriod = 1;
+let currentView = 'period'; // 'period' | 'trusted' | 'targeted'
 let dragStudent = null;
+// Track which period the dragged student belongs to for targeted views
+let dragStudentPeriod = null;
 
 function deepClone(obj) { return JSON.parse(JSON.stringify(obj)); }
 
 // ── TRUSTED ADULT LIST ──
 let trustedAdultList = new Set();
 
-// Pre-seed with 8 students from period 1
 const TRUSTED_ADULT_SEED = [
   { name:'Mateo Abalde', initials:'MA', color:'#5b7fa6' },
   { name:'Hannah Bloom', initials:'HB', color:'#7b6fa8' },
@@ -547,8 +548,6 @@ const TRUSTED_ADULT_SEED = [
 
 function initTrustedAdult() {
   trustedAdultList = new Set(TRUSTED_ADULT_SEED.map(s => s.name));
-  // Note: renderTrustedAdultView() is not called here because periodState
-  // is already initialized before this runs
 }
 
 function addToTrustedAdult(student) {
@@ -557,15 +556,13 @@ function addToTrustedAdult(student) {
     return;
   }
   trustedAdultList.add(student.name);
-  if (currentPeriod !== null) {
+  if (currentView === 'period' && currentPeriod !== null) {
     renderStudentGroups(currentPeriod);
-  } else {
+  } else if (currentView === 'trusted') {
     renderTrustedAdultView();
   }
   showToast(`⭐ ${student.name} added to My Trusted Students`);
 }
-
-function renderTrustedAdultList() { /* no-op: list is now a view, not a sidebar */ }
 
 function initState() {
   periodState = {};
@@ -577,10 +574,45 @@ function initState() {
   }
 }
 
-function pct(n, total) { return (n/total*100).toFixed(1)+'%'; }
+function pct(n, total) {
+  if (!total) return '0%';
+  return (n/total*100).toFixed(1)+'%';
+}
 
+// ── STUDENT CARD HTML HELPER ──
+function buildStudentCardHTML(s, periodNum) {
+  const color = AVATAR_COLORS[s.colorIdx % AVATAR_COLORS.length];
+  const parts = s.name.split(' ');
+  const nameHTML = parts.length > 1 ? parts[0]+'<br>'+parts.slice(1).join(' ') : s.name;
+  const snoozeHTML = s.snoozed ? `<span class="snooze-icon">⏰</span>` : '';
+  const RISK_BADGE = {
+    high:   { cls:'intervention', label:'High Risk' },
+    medium: { cls:'followup',     label:'Medium Risk' },
+    low:    { cls:'ontrack',      label:'Low Risk' },
+    survey: { cls:'survey',       label:'Needs Survey' }
+  };
+  const RING_CLASS = { high:'intervention', medium:'followup', low:'ontrack', survey:'survey' };
+  const risk = s.risk || s.group;
+  const badge = RISK_BADGE[risk] || RISK_BADGE.survey;
+  const ringCls = RING_CLASS[risk] || 'survey';
+  const isTrusted = trustedAdultList.has(s.name);
+  const starHTML = isTrusted ? `<span style="position:absolute;top:-2px;right:-2px;font-size:14px;line-height:1;">⭐</span>` : '';
+  return `
+    <div class="student-card" data-name="${s.name}" data-group="${s.group}" data-risk="${risk}" data-period="${periodNum}"
+         onmousedown="startDrag(event, '${s.name}', ${periodNum})">
+      <div class="avatar-wrap ${ringCls}" style="position:relative;">
+        <div class="student-avatar" style="background:${color}">${s.initials}</div>
+        ${starHTML}
+      </div>
+      <div class="student-name">${nameHTML}</div>
+      <div class="risk-badge ${badge.cls}">${snoozeHTML}${badge.label}</div>
+    </div>`;
+}
+
+// ── RENDER PERIOD ──
 function renderPeriod(p) {
   currentPeriod = p;
+  currentView = 'period';
   const base = PERIODS_BASE[p];
   const students = periodState[p];
   const total = students.length;
@@ -590,13 +622,8 @@ function renderPeriod(p) {
   document.getElementById('chart-title').textContent =
     `Risk Factor Characteristics – Period ${p}`;
 
-  // Always restore attendance risk cards FIRST before reading/writing them
-  document.querySelector('.risk-cards').innerHTML = `
-    <div class="risk-card high" id="card-high" onclick="handleRiskCardClick('high')"><div class="risk-number" id="high-num">-</div><div class="risk-label">High Risk</div><div class="risk-pct" id="high-pct">-</div></div>
-    <div class="risk-card medium" id="card-medium" onclick="handleRiskCardClick('medium')"><div class="risk-number" id="med-num">-</div><div class="risk-label">Medium Risk</div><div class="risk-pct" id="med-pct">-</div></div>
-    <div class="risk-card low" id="card-low" onclick="handleRiskCardClick('low')"><div class="risk-number" id="low-num">-</div><div class="risk-label">Low Risk</div><div class="risk-pct" id="low-pct">-</div></div>
-    <div class="risk-card survey" id="card-survey" onclick="handleRiskCardClick('survey')"><div class="risk-number" id="survey-num">-</div><div class="risk-label">Needs Survey</div><div class="risk-pct" id="survey-pct">-</div></div>`;
-  document.querySelector('.bar-chart-panel').style.display = '';
+  restoreAttendanceCards();
+  document.getElementById('bar-chart-panel').style.display = '';
   activeBarIndex = null;
   activeRiskFilter = null;
   activeA40Filter = null;
@@ -613,15 +640,25 @@ function renderPeriod(p) {
   document.getElementById('survey-num').textContent = counts.survey;
   document.getElementById('survey-pct').textContent = pct(counts.survey, total);
 
+  renderBarChart(base.bars, p);
+  renderStudentGroups(p);
+}
+
+function renderBarChart(bars, p) {
   const barClasses = ['b1','b2','b3','b4','b5','b6'];
-  if (!p) return;
-  document.getElementById('bar-chart-rows').innerHTML = base.bars.map((val,i) => `
+  document.getElementById('bar-chart-rows').innerHTML = bars.map((val,i) => `
     <div class="bar-row" data-bar-index="${i}" onclick="handleBarClick(${i}, ${p})">
       <div class="bar-label">${BAR_LABELS[i]}</div>
       <div class="bar-track"><div class="bar-fill ${barClasses[i]}" style="width:${val}%">${val}%</div></div>
     </div>`).join('');
+}
 
-  renderStudentGroups(p);
+function restoreAttendanceCards() {
+  document.getElementById('risk-cards-container').innerHTML = `
+    <div class="risk-card high" id="card-high" onclick="handleRiskCardClick('high')"><div class="risk-number" id="high-num">-</div><div class="risk-label">High Risk</div><div class="risk-pct" id="high-pct">-</div></div>
+    <div class="risk-card medium" id="card-medium" onclick="handleRiskCardClick('medium')"><div class="risk-number" id="med-num">-</div><div class="risk-label">Medium Risk</div><div class="risk-pct" id="med-pct">-</div></div>
+    <div class="risk-card low" id="card-low" onclick="handleRiskCardClick('low')"><div class="risk-number" id="low-num">-</div><div class="risk-label">Low Risk</div><div class="risk-pct" id="low-pct">-</div></div>
+    <div class="risk-card survey" id="card-survey" onclick="handleRiskCardClick('survey')"><div class="risk-number" id="survey-num">-</div><div class="risk-label">Needs Survey</div><div class="risk-pct" id="survey-pct">-</div></div>`;
 }
 
 function renderStudentGroups(p) {
@@ -629,41 +666,11 @@ function renderStudentGroups(p) {
   const grouped = { intervention:[], followup:[], survey:[], ontrack:[] };
   students.forEach(s => grouped[s.group].push(s));
 
-  const RISK_BADGE = {
-    high:   { cls:'intervention', label:'High Risk' },
-    medium: { cls:'followup',     label:'Medium Risk' },
-    low:    { cls:'ontrack',      label:'Low Risk' },
-    survey: { cls:'survey',       label:'Needs Survey' }
-  };
-  const RING_CLASS = {
-    high: 'intervention', medium: 'followup', low: 'ontrack', survey: 'survey'
-  };
-
   const groupsHTML = GROUP_ORDER.map(gKey => {
     const cfg = GROUP_CONFIG[gKey];
     const list = grouped[gKey];
     if (!list.length) return '';
-    const cardsHTML = list.map(s => {
-      const color = AVATAR_COLORS[s.colorIdx % AVATAR_COLORS.length];
-      const parts = s.name.split(' ');
-      const nameHTML = parts.length > 1 ? parts[0]+'<br>'+parts.slice(1).join(' ') : s.name;
-      const snoozeHTML = s.snoozed ? `<span class="snooze-icon">⏰</span>` : '';
-      const risk = s.risk || s.group;
-      const badge = RISK_BADGE[risk] || RISK_BADGE.survey;
-      const ringCls = RING_CLASS[risk] || 'survey';
-      const isTrusted = trustedAdultList.has(s.name);
-      const starHTML = isTrusted ? `<span style="position:absolute;top:-2px;right:-2px;font-size:14px;line-height:1;">⭐</span>` : '';
-      return `
-        <div class="student-card" data-name="${s.name}" data-group="${s.group}" data-risk="${risk}"
-             onmousedown="startDrag(event, '${s.name}', ${p})">
-          <div class="avatar-wrap ${ringCls}" style="position:relative;">
-            <div class="student-avatar" style="background:${color}">${s.initials}</div>
-            ${starHTML}
-          </div>
-          <div class="student-name">${nameHTML}</div>
-          <div class="risk-badge ${badge.cls}">${snoozeHTML}${badge.label}</div>
-        </div>`;
-    }).join('');
+    const cardsHTML = list.map(s => buildStudentCardHTML(s, p)).join('');
     return `
       <div class="student-group">
         <div class="group-header ${cfg.headerClass}">
@@ -680,19 +687,244 @@ function renderStudentGroups(p) {
   groups.classList.add('fade-in');
 }
 
+// ── TARGETED STUDENTS VIEW ──
+function selectTargetedView(el, type, key) {
+  document.querySelectorAll('.tree-row.selected').forEach(r => r.classList.remove('selected'));
+  el.classList.add('selected');
+  currentView = 'targeted';
+  currentPeriod = null;
+  activeBarIndex = null;
+  activeRiskFilter = null;
+  activeA40Filter = null;
+
+  if (type === 'risk-factor') renderRiskFactorView(key);
+  else if (type === 'action') renderActionView(key);
+}
+
+// Get students flagged for a risk factor across all periods
+// Uses same bar-chart logic: students selected deterministically by bar % and barIdx seed
+function getStudentsForRiskFactor(rfKey) {
+  const barIdx = RISK_FACTOR_BAR_INDEX[rfKey];
+  const result = {}; // { periodNum: [student, ...] }
+  for (let p = 1; p <= 8; p++) {
+    const base = PERIODS_BASE[p];
+    const students = periodState[p];
+    const eligible = students.filter(s => s.group !== 'survey');
+    const pctVal = base.bars[barIdx] / 100;
+    const count = Math.round(eligible.length * pctVal);
+    const seed = barIdx * 7;
+    const highlighted = new Set();
+    for (let i = 0; i < count; i++) {
+      highlighted.add(eligible[(seed + i * 3) % eligible.length].name);
+    }
+    result[p] = students.filter(s => highlighted.has(s.name));
+  }
+  return result;
+}
+
+function renderRiskFactorView(rfKey) {
+  const label = RISK_FACTOR_LABELS[rfKey];
+  const barIdx = RISK_FACTOR_BAR_INDEX[rfKey];
+
+  document.getElementById('page-subtitle').textContent =
+    `EOS Demo School – Risk Factors – ${label}`;
+
+  // Summary analytics: aggregate counts across all periods (non-survey only)
+  let total = 0, high = 0, med = 0, low = 0, surv = 0;
+  const byPeriod = getStudentsForRiskFactor(rfKey);
+  for (let p = 1; p <= 8; p++) {
+    byPeriod[p].forEach(s => {
+      total++;
+      if (s.risk === 'high') high++;
+      else if (s.risk === 'medium') med++;
+      else if (s.risk === 'low') low++;
+      else surv++;
+    });
+  }
+
+  restoreAttendanceCards();
+  document.getElementById('high-num').textContent = high;
+  document.getElementById('high-pct').textContent = pct(high, total);
+  document.getElementById('med-num').textContent = med;
+  document.getElementById('med-pct').textContent = pct(med, total);
+  document.getElementById('low-num').textContent = low;
+  document.getElementById('low-pct').textContent = pct(low, total);
+  document.getElementById('survey-num').textContent = surv;
+  document.getElementById('survey-pct').textContent = pct(surv, total);
+
+  // Bar chart: average bar values across all periods, highlighting the relevant factor
+  const avgBars = BAR_LABELS.map((_, i) => {
+    const sum = [1,2,3,4,5,6,7,8].reduce((acc, p) => acc + PERIODS_BASE[p].bars[i], 0);
+    return parseFloat((sum / 8).toFixed(1));
+  });
+  document.getElementById('chart-title').textContent = `Risk Factor Characteristics – All Periods`;
+  document.getElementById('bar-chart-panel').style.display = '';
+  const barClasses = ['b1','b2','b3','b4','b5','b6'];
+  document.getElementById('bar-chart-rows').innerHTML = avgBars.map((val, i) => `
+    <div class="bar-row${i === barIdx ? ' active-filter' : ''}">
+      <div class="bar-label">${BAR_LABELS[i]}</div>
+      <div class="bar-track"><div class="bar-fill ${barClasses[i]}" style="width:${val}%">${val}%</div></div>
+    </div>`).join('');
+
+  // Render students grouped by period then Trusted Adults
+  const hint = document.getElementById('filter-hint');
+  hint.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Flagged for <strong>${label}</strong> across all periods (${total} students)`;
+
+  let html = '';
+  for (let p = 1; p <= 8; p++) {
+    const list = byPeriod[p];
+    if (!list.length) continue;
+    const cardsHTML = list.map(s => buildStudentCardHTML(s, p)).join('');
+    html += `
+      <div class="student-group">
+        <div class="group-header period">
+          Period ${p} <span class="group-count">${list.length}</span>
+        </div>
+        <div class="student-grid">${cardsHTML}</div>
+      </div>`;
+  }
+
+  // Trusted Adults section
+  const trustedList = getTrustedStudentsForRiskFactor(byPeriod);
+  if (trustedList.length) {
+    const cardsHTML = trustedList.map(({ s, p }) => buildStudentCardHTML(s, p)).join('');
+    html += `
+      <div class="student-group">
+        <div class="group-header trusted">
+          ⭐ My Trusted Students <span class="group-count" style="background:#e8a020;">${trustedList.length}</span>
+        </div>
+        <div class="student-grid">${cardsHTML}</div>
+      </div>`;
+  }
+
+  const groups = document.getElementById('student-groups');
+  groups.innerHTML = html;
+  groups.classList.remove('fade-in');
+  void groups.offsetWidth;
+  groups.classList.add('fade-in');
+}
+
+function getTrustedStudentsForRiskFactor(byPeriod) {
+  // Return [{s, p}] for trusted students that appear in the flagged set
+  const result = [];
+  const seen = new Set();
+  for (let p = 1; p <= 8; p++) {
+    byPeriod[p].forEach(s => {
+      if (trustedAdultList.has(s.name) && !seen.has(s.name)) {
+        seen.add(s.name);
+        result.push({ s, p });
+      }
+    });
+  }
+  return result;
+}
+
+function renderActionView(actionKey) {
+  const label = ACTION_LABELS[actionKey];
+  document.getElementById('page-subtitle').textContent =
+    `EOS Demo School – Action Needed – ${label}`;
+
+  // Filter logic per action key
+  const filterFn = {
+    'high-risk':    s => s.group === 'intervention',
+    'follow-up':    s => s.group === 'followup',
+    'needs-survey': s => s.group === 'survey'
+  }[actionKey];
+
+  // Gather students across all periods
+  const byPeriod = {};
+  let total = 0, high = 0, med = 0, low = 0, surv = 0;
+  for (let p = 1; p <= 8; p++) {
+    byPeriod[p] = periodState[p].filter(filterFn);
+    byPeriod[p].forEach(s => {
+      total++;
+      if (s.risk === 'high') high++;
+      else if (s.risk === 'medium') med++;
+      else if (s.risk === 'low') low++;
+      else surv++;
+    });
+  }
+
+  restoreAttendanceCards();
+  document.getElementById('high-num').textContent = high;
+  document.getElementById('high-pct').textContent = pct(high, total);
+  document.getElementById('med-num').textContent = med;
+  document.getElementById('med-pct').textContent = pct(med, total);
+  document.getElementById('low-num').textContent = low;
+  document.getElementById('low-pct').textContent = pct(low, total);
+  document.getElementById('survey-num').textContent = surv;
+  document.getElementById('survey-pct').textContent = pct(surv, total);
+
+  // Bar chart: average bars
+  const avgBars = BAR_LABELS.map((_, i) => {
+    const sum = [1,2,3,4,5,6,7,8].reduce((acc, p) => acc + PERIODS_BASE[p].bars[i], 0);
+    return parseFloat((sum / 8).toFixed(1));
+  });
+  document.getElementById('chart-title').textContent = `Risk Factor Characteristics – All Periods`;
+  document.getElementById('bar-chart-panel').style.display = '';
+  const barClasses = ['b1','b2','b3','b4','b5','b6'];
+  document.getElementById('bar-chart-rows').innerHTML = avgBars.map((val, i) => `
+    <div class="bar-row">
+      <div class="bar-label">${BAR_LABELS[i]}</div>
+      <div class="bar-track"><div class="bar-fill ${barClasses[i]}" style="width:${val}%">${val}%</div></div>
+    </div>`).join('');
+
+  const actionIcons = { 'high-risk': '🔴', 'follow-up': '🟡', 'needs-survey': '📋' };
+  const hint = document.getElementById('filter-hint');
+  hint.innerHTML = `${actionIcons[actionKey] || ''} <strong>${label}</strong> — ${total} students across all periods`;
+
+  let html = '';
+  for (let p = 1; p <= 8; p++) {
+    const list = byPeriod[p];
+    if (!list.length) continue;
+    const cardsHTML = list.map(s => buildStudentCardHTML(s, p)).join('');
+    html += `
+      <div class="student-group">
+        <div class="group-header period">
+          Period ${p} <span class="group-count">${list.length}</span>
+        </div>
+        <div class="student-grid">${cardsHTML}</div>
+      </div>`;
+  }
+
+  // Trusted Adults section
+  const trustedList = [];
+  const seen = new Set();
+  for (let p = 1; p <= 8; p++) {
+    byPeriod[p].forEach(s => {
+      if (trustedAdultList.has(s.name) && !seen.has(s.name)) {
+        seen.add(s.name);
+        trustedList.push({ s, p });
+      }
+    });
+  }
+  if (trustedList.length) {
+    const cardsHTML = trustedList.map(({ s, p }) => buildStudentCardHTML(s, p)).join('');
+    html += `
+      <div class="student-group">
+        <div class="group-header trusted">
+          ⭐ My Trusted Students <span class="group-count" style="background:#e8a020;">${trustedList.length}</span>
+        </div>
+        <div class="student-grid">${cardsHTML}</div>
+      </div>`;
+  }
+
+  const groups = document.getElementById('student-groups');
+  groups.innerHTML = html;
+  groups.classList.remove('fade-in');
+  void groups.offsetWidth;
+  groups.classList.add('fade-in');
+}
+
 // ── PROGRAM SWITCHER ──
 let currentProgram = 'attendance';
 
-// A40 categories per student (assigned randomly but consistently per period)
-// categories: 'current' | 'interested' | 'previous' | 'not'
-// Proportions: ~25% current, ~15% interested, ~5% previous, ~50% not
 const A40_CATS = ['current','current','current','current','current',
                   'interested','interested','interested',
                   'previous',
                   'not','not','not','not','not','not','not','not','not','not'];
 
 function getA40Cat(studentIdx, periodNum) {
-  // Deterministic assignment based on student index and period
   const cats = ['current','current','current','current','current',
                 'interested','interested','interested',
                 'previous',
@@ -702,13 +934,10 @@ function getA40Cat(studentIdx, periodNum) {
 
 function selectProgram(prog) {
   currentProgram = prog;
-  // Update UI
   document.getElementById('prog-attendance').style.cssText = prog === 'attendance'
-    ? 'font-weight:600;background:#ede9ff;border-color:#b39ddb;color:#5b21b6;'
-    : '';
+    ? 'font-weight:600;background:#ede9ff;border-color:#b39ddb;color:#5b21b6;' : '';
   document.getElementById('prog-a40').style.cssText = prog === 'a40'
-    ? 'font-weight:600;background:#ede9ff;border-color:#b39ddb;color:#5b21b6;'
-    : '';
+    ? 'font-weight:600;background:#ede9ff;border-color:#b39ddb;color:#5b21b6;' : '';
 
   if (currentPeriod !== null) {
     if (prog === 'a40') renderA40Period(currentPeriod);
@@ -727,6 +956,7 @@ let activeA40Filter = null;
 
 function renderA40Period(p) {
   currentPeriod = p;
+  currentView = 'period';
   activeA40Filter = null;
   activeBarIndex = null;
   activeRiskFilter = null;
@@ -738,16 +968,10 @@ function renderA40Period(p) {
   const students = periodState[p];
   const total = students.length;
 
-  // Assign A40 categories
-  const studentsWithA40 = students.map((s, i) => ({
-    ...s, a40: getA40Cat(i, p)
-  }));
-
-  // Count
+  const studentsWithA40 = students.map((s, i) => ({ ...s, a40: getA40Cat(i, p) }));
   const counts = { current:0, interested:0, previous:0, not:0 };
   studentsWithA40.forEach(s => counts[s.a40]++);
 
-  // Render summary cards (replacing risk cards)
   const cardsHTML = A40_CONFIG.map(cfg => `
     <div class="a40-card ${cfg.cardCls}" id="a40-card-${cfg.key}" onclick="handleA40CardClick('${cfg.key}', ${p})">
       <div class="risk-number">${counts[cfg.key]}</div>
@@ -755,14 +979,11 @@ function renderA40Period(p) {
       <div class="risk-pct">${pct(counts[cfg.key], total)}</div>
     </div>`).join('');
 
-  document.querySelector('.risk-cards').innerHTML = cardsHTML;
-
-  // Hide bar chart
+  document.getElementById('risk-cards-container').innerHTML = cardsHTML;
   document.getElementById('bar-chart-rows').innerHTML = '';
   document.getElementById('chart-title').textContent = '';
-  document.querySelector('.bar-chart-panel').style.display = 'none';
+  document.getElementById('bar-chart-panel').style.display = 'none';
 
-  // Render student groups by A40 category
   const grouped = { current:[], interested:[], previous:[], not:[] };
   studentsWithA40.forEach(s => grouped[s.a40].push(s));
 
@@ -776,7 +997,7 @@ function renderA40Period(p) {
       const isTrusted = trustedAdultList.has(s.name);
       const starHTML = isTrusted ? `<span style="position:absolute;top:-2px;right:-2px;font-size:14px;line-height:1;">⭐</span>` : '';
       return `
-        <div class="student-card a40-student" data-name="${s.name}" data-a40="${s.a40}" data-group="${s.group}" data-risk="${s.risk||s.group}"
+        <div class="student-card a40-student" data-name="${s.name}" data-a40="${s.a40}" data-group="${s.group}" data-risk="${s.risk||s.group}" data-period="${p}"
              onmousedown="startDrag(event, '${s.name}', ${p})">
           <div class="avatar-wrap ${cfg.ringCls}" style="position:relative;">
             <div class="student-avatar" style="background:${color}">${s.initials}</div>
@@ -808,7 +1029,6 @@ function renderA40Period(p) {
 function handleA40CardClick(cat, p) {
   if (activeA40Filter === cat) {
     activeA40Filter = null;
-    // Clear all highlights
     A40_CONFIG.forEach(cfg => {
       const card = document.getElementById('a40-card-' + cfg.key);
       if (card) card.classList.remove('active-card');
@@ -819,30 +1039,23 @@ function handleA40CardClick(cat, p) {
     });
     return;
   }
-
   activeA40Filter = cat;
   A40_CONFIG.forEach(cfg => {
     const card = document.getElementById('a40-card-' + cfg.key);
     if (card) card.classList.toggle('active-card', cfg.key === cat);
   });
-
   document.querySelectorAll('.a40-student').forEach(card => {
     const a40 = card.dataset.a40;
     A40_CONFIG.forEach(cfg => card.classList.remove('a40-highlight-' + cfg.key));
     card.classList.remove('risk-dim');
-    if (a40 === cat) {
-      card.classList.add('a40-highlight-' + cat);
-    } else {
-      card.classList.add('risk-dim');
-    }
+    if (a40 === cat) card.classList.add('a40-highlight-' + cat);
+    else card.classList.add('risk-dim');
   });
 }
 
 // ── RISK CARD FILTER ──
 let activeRiskFilter = null;
 
-// Bar chart multipliers per risk tier (relative to base values)
-// High risk students score higher on risk factors, low risk lower
 const RISK_MULTIPLIERS = {
   high:   [1.18, 1.22, 1.28, 1.30, 1.25, 1.32],
   medium: [1.04, 1.06, 1.02, 1.05, 1.03, 1.04],
@@ -851,53 +1064,35 @@ const RISK_MULTIPLIERS = {
 };
 
 function handleRiskCardClick(tier) {
-  // Toggle off if same card clicked again
-  if (activeRiskFilter === tier) {
-    clearRiskFilter();
-    return;
-  }
-
-  // Clear bar filter if active
-  if (activeBarIndex !== null) {
-    clearBarHighlight();
-  }
-
+  if (activeRiskFilter === tier) { clearRiskFilter(); return; }
+  if (activeBarIndex !== null) clearBarHighlight();
   activeRiskFilter = tier;
-
-  // Update card active states
   ['high','medium','low','survey'].forEach(t => {
     const card = document.getElementById('card-' + t);
     if (card) card.classList.toggle('active-card', t === tier);
   });
-
-  // Highlight/dim student cards
   document.querySelectorAll('.student-card').forEach(card => {
     const risk = card.dataset.risk;
     card.classList.remove('risk-highlight-high','risk-highlight-medium','risk-highlight-low','risk-highlight-survey','risk-dim');
-    if (risk === tier) {
-      card.classList.add('risk-highlight-' + tier);
-    } else {
-      card.classList.add('risk-dim');
-    }
+    if (risk === tier) card.classList.add('risk-highlight-' + tier);
+    else card.classList.add('risk-dim');
   });
-
-  // Update bar chart with tier-adjusted values
-  const base = PERIODS_BASE[currentPeriod];
-  const mults = RISK_MULTIPLIERS[tier];
-  const barClasses = ['b1','b2','b3','b4','b5','b6'];
-  document.getElementById('bar-chart-rows').innerHTML = base.bars.map((val, i) => {
-    const adjusted = Math.min(99.9, val * mults[i]).toFixed(1);
-    return `
-      <div class="bar-row" data-bar-index="${i}" onclick="handleBarClick(${i}, ${currentPeriod})">
-        <div class="bar-label">${BAR_LABELS[i]}</div>
-        <div class="bar-track"><div class="bar-fill ${barClasses[i]}" style="width:${adjusted}%">${adjusted}%</div></div>
-      </div>`;
-  }).join('');
-
-  // Update hint
+  if (currentPeriod !== null) {
+    const base = PERIODS_BASE[currentPeriod];
+    const mults = RISK_MULTIPLIERS[tier];
+    const barClasses = ['b1','b2','b3','b4','b5','b6'];
+    document.getElementById('bar-chart-rows').innerHTML = base.bars.map((val, i) => {
+      const adjusted = Math.min(99.9, val * mults[i]).toFixed(1);
+      return `
+        <div class="bar-row" data-bar-index="${i}" onclick="handleBarClick(${i}, ${currentPeriod})">
+          <div class="bar-label">${BAR_LABELS[i]}</div>
+          <div class="bar-track"><div class="bar-fill ${barClasses[i]}" style="width:${adjusted}%">${adjusted}%</div></div>
+        </div>`;
+    }).join('');
+  }
   const tierLabels = { high:'High Risk', medium:'Medium Risk', low:'Low Risk', survey:'Needs Survey' };
   const hint = document.getElementById('filter-hint');
-  if (hint) hint.textContent = `Showing ${tierLabels[tier]} students — click the card again or elsewhere to clear`;
+  if (hint) hint.textContent = `Showing ${tierLabels[tier]} students — click the card again to clear`;
 }
 
 function clearRiskFilter() {
@@ -909,14 +1104,10 @@ function clearRiskFilter() {
   document.querySelectorAll('.student-card').forEach(card => {
     card.classList.remove('risk-highlight-high','risk-highlight-medium','risk-highlight-low','risk-highlight-survey','risk-dim');
   });
-  // Restore base bar chart
-  const base = PERIODS_BASE[currentPeriod];
-  const barClasses = ['b1','b2','b3','b4','b5','b6'];
-  document.getElementById('bar-chart-rows').innerHTML = base.bars.map((val, i) => `
-    <div class="bar-row" data-bar-index="${i}" onclick="handleBarClick(${i}, ${currentPeriod})">
-      <div class="bar-label">${BAR_LABELS[i]}</div>
-      <div class="bar-track"><div class="bar-fill ${barClasses[i]}" style="width:${val}%">${val}%</div></div>
-    </div>`).join('');
+  if (currentPeriod !== null) {
+    const base = PERIODS_BASE[currentPeriod];
+    renderBarChart(base.bars, currentPeriod);
+  }
   const hint = document.getElementById('filter-hint');
   if (hint) hint.textContent = '';
 }
@@ -927,60 +1118,38 @@ let activeBarIndex = null;
 function handleBarClick(barIdx, p) {
   const base = PERIODS_BASE[p];
   const allStudents = periodState[p];
-  // Only survey-takers (not survey group) can be highlighted
   const eligible = allStudents.filter(s => s.group !== 'survey');
 
-  if (activeBarIndex === barIdx) {
-    // Toggle off
-    activeBarIndex = null;
-    clearBarHighlight();
-    return;
-  }
-
+  if (activeBarIndex === barIdx) { activeBarIndex = null; clearBarHighlight(); return; }
   activeBarIndex = barIdx;
 
-  // Mark active bar row
   document.querySelectorAll('.bar-row').forEach(r => r.classList.remove('active-filter'));
   const activeRow = document.querySelector(`.bar-row[data-bar-index="${barIdx}"]`);
   if (activeRow) activeRow.classList.add('active-filter');
 
-  // Calculate how many students to highlight based on %
   const pctVal = base.bars[barIdx] / 100;
   const count = Math.round(eligible.length * pctVal);
-
-  // Pick a deterministic subset (seeded by barIdx so consistent on re-click)
   const highlighted = new Set();
   const seed = barIdx * 7;
   for (let i = 0; i < count; i++) {
     highlighted.add(eligible[(seed + i * 3) % eligible.length].name);
   }
 
-  // Apply to cards
   document.querySelectorAll('.student-card').forEach(card => {
     const name = card.dataset.name;
     const group = card.dataset.group;
-    if (group === 'survey') return; // survey students not affected
-    if (highlighted.has(name)) {
-      card.classList.add('highlighted');
-      card.classList.remove('dimmed');
-    } else {
-      card.classList.add('dimmed');
-      card.classList.remove('highlighted');
-    }
+    if (group === 'survey') return;
+    if (highlighted.has(name)) { card.classList.add('highlighted'); card.classList.remove('dimmed'); }
+    else { card.classList.add('dimmed'); card.classList.remove('highlighted'); }
   });
 
-  // Show hint
   const hint = document.getElementById('filter-hint');
-  if (hint) {
-    hint.textContent = `Showing ${count} of ${eligible.length} surveyed students flagged for ${BAR_LABELS[barIdx]} — click again or elsewhere to clear`;
-  }
+  if (hint) hint.textContent = `Showing ${count} of ${eligible.length} surveyed students flagged for ${BAR_LABELS[barIdx]} — click again to clear`;
 }
 
 function clearBarHighlight() {
   document.querySelectorAll('.bar-row').forEach(r => r.classList.remove('active-filter'));
-  document.querySelectorAll('.student-card').forEach(c => {
-    c.classList.remove('highlighted', 'dimmed');
-  });
+  document.querySelectorAll('.student-card').forEach(c => c.classList.remove('highlighted', 'dimmed'));
   const hint = document.getElementById('filter-hint');
   if (hint) hint.textContent = '';
 }
@@ -991,6 +1160,7 @@ let dragStartX, dragStartY;
 const DRAG_THRESHOLD = 6;
 
 function startDrag(e, name, period) {
+  dragStudentPeriod = period;
   dragStudent = periodState[period].find(s => s.name === name);
   dragStartX = e.clientX;
   dragStartY = e.clientY;
@@ -1014,7 +1184,6 @@ function onMouseMove(e) {
       isDragging = true;
       const ghost = document.getElementById('drag-ghost');
       ghost.style.display = 'flex';
-      // Mark card as dragging
       document.querySelectorAll('.student-card').forEach(c => {
         if (c.dataset.name === dragStudent.name) c.classList.add('dragging');
       });
@@ -1048,8 +1217,6 @@ function openModal(student) {
   avatarEl.style.background = AVATAR_COLORS[student.colorIdx % AVATAR_COLORS.length];
 
   const zonesEl = document.getElementById('drop-zones');
-
-  // Always show Log Interaction zones
   const logZones = [
     { key:'1on1', icon:'🤝', label:'1-on-1 Interaction', sub:'Move to On Track' },
     { key:'parent', icon:'👪', label:'Parent Interaction', sub:'Move to On Track' },
@@ -1058,7 +1225,6 @@ function openModal(student) {
   ];
 
   if (isSurvey) {
-    // Survey students: log interaction options + get survey link
     zonesEl.className = 'drop-zones followup-zones';
     const surveyZones = [
       ...logZones,
@@ -1090,7 +1256,6 @@ function openModal(student) {
         <div class="zone-sublabel">${z.sub}</div>
       </div>`).join('');
   } else {
-    // followup or ontrack: log interaction + delay follow-up
     zonesEl.className = 'drop-zones followup-zones';
     const allZones = [
       ...logZones,
@@ -1118,7 +1283,6 @@ function handleDrop(action) {
     openSurveyModal(dragStudent.name);
     return;
   }
-
   if (action === 'trustedadult') {
     closeModal();
     if (!dragStudent) return;
@@ -1130,7 +1294,8 @@ function handleDrop(action) {
   closeModal();
   if (!dragStudent) return;
 
-  const s = periodState[currentPeriod].find(st => st.name === dragStudent.name);
+  const p = dragStudentPeriod || currentPeriod;
+  const s = periodState[p].find(st => st.name === dragStudent.name);
   if (!s) return;
 
   if (action === 'delay') {
@@ -1139,17 +1304,19 @@ function handleDrop(action) {
   } else {
     s.group = 'ontrack';
     s.snoozed = false;
-    const actionLabels = {
-      '1on1': '1-on-1 Interaction',
-      'parent': 'Parent Interaction',
-      'counselor': 'Counselor Referral',
-      'other': 'Other'
-    };
+    const actionLabels = { '1on1':'1-on-1 Interaction', 'parent':'Parent Interaction', 'counselor':'Counselor Referral', 'other':'Other' };
     showToast(`${s.name} → On Track (${actionLabels[action] || action})`);
   }
 
-  renderPeriod(currentPeriod);
+  // Re-render current view
+  if (currentView === 'period' && currentPeriod !== null) {
+    renderPeriod(currentPeriod);
+  } else if (currentView === 'trusted') {
+    renderTrustedAdultView();
+  }
+  // For targeted views, re-render is complex — just refresh the page subtitle stay; a full re-render would need the last key
   dragStudent = null;
+  dragStudentPeriod = null;
 }
 
 function closeModal() {
@@ -1158,7 +1325,6 @@ function closeModal() {
   document.querySelectorAll('.student-card').forEach(c => c.classList.remove('dragging'));
 }
 
-// Close modal if clicking overlay background
 document.getElementById('modal-overlay').addEventListener('mouseup', function(e) {
   if (e.target === this) closeModal();
 });
@@ -1173,7 +1339,7 @@ function showToast(msg) {
 // ── RESET ──
 function resetPeriod() {
   initState();
-  renderPeriod(currentPeriod);
+  renderPeriod(currentPeriod || 1);
   showToast('View reset to original state');
 }
 
@@ -1193,6 +1359,7 @@ function selectTrustedAdult(el) {
 
 function renderTrustedAdultView() {
   currentPeriod = null;
+  currentView = 'trusted';
   activeBarIndex = null;
   activeRiskFilter = null;
   ['high','medium','low','survey'].forEach(t => {
@@ -1203,7 +1370,6 @@ function renderTrustedAdultView() {
   document.getElementById('page-subtitle').textContent = 'EOS Demo School – My Trusted Students';
   document.getElementById('chart-title').textContent = 'Risk Factor Characteristics – My Trusted Students';
 
-  // Gather all trusted students from all periods (deduplicated by name)
   const seen = new Set();
   const trusted = [];
   for (let p = 1; p <= 8; p++) {
@@ -1216,7 +1382,6 @@ function renderTrustedAdultView() {
       });
     }
   }
-  // Also include seed students that may not appear in current periodState
   TRUSTED_ADULT_SEED.forEach(seed => {
     if (!seen.has(seed.name)) {
       seen.add(seed.name);
@@ -1225,13 +1390,10 @@ function renderTrustedAdultView() {
   });
 
   const total = trusted.length;
-  const counts = { intervention:0, followup:0, ontrack:0, survey:0 };
-  trusted.forEach(s => counts[s.group]++);
-
-  // Count by actual risk level for trusted students
   const riskCounts = { high:0, medium:0, low:0, survey:0 };
   trusted.forEach(s => { const r = s.risk || 'low'; riskCounts[r] = (riskCounts[r]||0) + 1; });
 
+  restoreAttendanceCards();
   document.getElementById('high-num').textContent = riskCounts.high;
   document.getElementById('high-pct').textContent = pct(riskCounts.high, total);
   document.getElementById('med-num').textContent = riskCounts.medium;
@@ -1241,32 +1403,26 @@ function renderTrustedAdultView() {
   document.getElementById('survey-num').textContent = riskCounts.survey;
   document.getElementById('survey-pct').textContent = pct(riskCounts.survey, total);
 
-  // Placeholder bar chart for trusted students
   const barClasses = ['b1','b2','b3','b4','b5','b6'];
   const trustedBars = [72.3, 58.1, 49.6, 44.2, 38.7, 31.4];
+  document.getElementById('bar-chart-panel').style.display = '';
   document.getElementById('bar-chart-rows').innerHTML = trustedBars.map((val, i) => `
     <div class="bar-row">
       <div class="bar-label">${BAR_LABELS[i]}</div>
       <div class="bar-track"><div class="bar-fill ${barClasses[i]}" style="width:${val}%">${val}%</div></div>
     </div>`).join('');
 
-  // Render students in a single grid (no grouping needed here)
   const cardsHTML = trusted.map(s => {
     const color = AVATAR_COLORS[s.colorIdx % AVATAR_COLORS.length];
     const parts = s.name.split(' ');
     const nameHTML = parts.length > 1 ? parts[0] + '<br>' + parts.slice(1).join(' ') : s.name;
-    const RISK_BADGE = {
-      high:   { cls:'intervention', label:'High Risk' },
-      medium: { cls:'followup',     label:'Medium Risk' },
-      low:    { cls:'ontrack',      label:'Low Risk' },
-      survey: { cls:'survey',       label:'Needs Survey' }
-    };
+    const RISK_BADGE = { high:{ cls:'intervention', label:'High Risk' }, medium:{ cls:'followup', label:'Medium Risk' }, low:{ cls:'ontrack', label:'Low Risk' }, survey:{ cls:'survey', label:'Needs Survey' } };
     const RING_CLASS = { high:'intervention', medium:'followup', low:'ontrack', survey:'survey' };
     const risk = s.risk || s.group;
     const badge = RISK_BADGE[risk] || RISK_BADGE.survey;
     const ringCls = RING_CLASS[risk] || 'survey';
     return `
-      <div class="student-card" data-name="${s.name}" data-group="${s.group}" data-risk="${risk}"
+      <div class="student-card" data-name="${s.name}" data-group="${s.group}" data-risk="${risk}" data-period="1"
            onmousedown="startDrag(event, '${s.name}', 1)">
         <div class="avatar-wrap ${ringCls}" style="position:relative;">
           <div class="student-avatar" style="background:${color}">${s.initials}</div>
@@ -1332,14 +1488,12 @@ function copyLink() {
   showToast('Survey link copied to clipboard');
 }
 
-// Close survey modal on overlay click
 document.getElementById('survey-modal-overlay').addEventListener('mouseup', function(e) {
   if (e.target === this) closeSurveyModal();
 });
 
-// Click outside bars clears highlight
 document.addEventListener('click', function(e) {
-  if (!activeBarIndex === null) return;
+  if (activeBarIndex === null) return;
   const inBar = e.target.closest('.bar-row');
   const inStudents = e.target.closest('#student-groups');
   const inRiskCards = e.target.closest('.risk-cards');
